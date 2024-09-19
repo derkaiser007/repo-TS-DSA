@@ -27,6 +27,15 @@ class SinglyLinkedList<T>{
         }  
     } 
 
+    insertAtHead(value:T){
+        const newListNode = new ListNode(value)
+        if(!this.head) this.head = newListNode;
+        else {
+            newListNode.next = this.head
+            this.head = newListNode
+        }
+    }
+
     insertInBetween(value: T, referenceValue: T){
         const newListNode = new ListNode(value)
         if(!this.head) console.error("Can't add the value because reference value isn't found.");
@@ -77,6 +86,8 @@ list.insertAtEnd(27)
 list.insertAtEnd(15)
 list.insertAtEnd(43)
 list.insertAtEnd(57)
+list.traverseList()
+list.insertAtHead(11)
 list.traverseList()
 list.insertInBetween(92, 15)
 list.traverseList()

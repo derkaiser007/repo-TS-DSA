@@ -25,6 +25,15 @@ var SinglyLinkedList = /** @class */ (function () {
             currentNode.next = newListNode;
         }
     };
+    SinglyLinkedList.prototype.insertAtHead = function (value) {
+        var newListNode = new ListNode(value);
+        if (!this.head)
+            this.head = newListNode;
+        else {
+            newListNode.next = this.head;
+            this.head = newListNode;
+        }
+    };
     SinglyLinkedList.prototype.insertInBetween = function (value, referenceValue) {
         var newListNode = new ListNode(value);
         if (!this.head)
@@ -83,6 +92,8 @@ list.insertAtEnd(27);
 list.insertAtEnd(15);
 list.insertAtEnd(43);
 list.insertAtEnd(57);
+list.traverseList();
+list.insertAtHead(11);
 list.traverseList();
 list.insertInBetween(92, 15);
 list.traverseList();
