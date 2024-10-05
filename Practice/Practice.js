@@ -21,3 +21,16 @@ const sortedNums: number[] = nums.slice().sort((a, b) => a-b)
 console.log(nums)
 console.log(sortedNums)
 */
+function bubbleSort(arr) {
+    for (var i = 0; i < arr.length - 1; i++) {
+        for (var j = 0; j < arr.length - i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                var temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+    return arr;
+}
+console.log(bubbleSort([123, 23, 45, 6, 145, 65, 27, 56, 89, 7890]));
