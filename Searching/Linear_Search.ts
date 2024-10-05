@@ -1,6 +1,8 @@
 // tsc Searching/Linear_Search
 // node Searching/Linear_Search
 
+// Time Complexity: O(n)
+// Auxiliary Space Complexity: O(1)
 function linear_search(arr: any[], val: any): boolean{
     for(let i = 0; i < arr.length; i++){
        if(arr[i] === val) {

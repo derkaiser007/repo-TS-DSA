@@ -1,15 +1,17 @@
 // tsc Searching/Binary_Search
 // node Searching/Binary_Search
 
-function binary_search(sorted_arr: number[], val: number, i = 0, j = sorted_arr.length -1): boolean{
-    let mid = Math.floor((i + j) / 2)
-    if(i < j){
-        if(sorted_arr[mid] < val) return binary_search(sorted_arr, val, mid + 1, j);
-        else if(sorted_arr[mid] > val) return binary_search(sorted_arr, val, i, mid - 1);
-        else return true;
+// Time Complexity: O(log n)
+// Auxiliary Space Complexity: O(1)
+function binarySearch(arr: number[], val: number, start: number = 0, end: number = arr.length-1): boolean {
+    while(start <= end){
+        let mid: number = Math.floor((start+end)/2);
+        console.log(start, end, mid);
+        if(arr[mid] === val) return true;
+        else if(arr[mid] > val) return binarySearch(arr, val, start, mid-1);
+        else return binarySearch(arr, val, mid+1, end);         
     }
     return false;
 }
-const sorted_arr: number[] = [1, 2, 3, 4, 5]
-const val: number = -10000000000
-console.log(binary_search(sorted_arr, val))
+
+console.log(binarySearch([4, 12, 23, 34, 45, 56, 67, 78, 89, 90, 101, 111, 122, 132, 143, 156, 163], 163))
