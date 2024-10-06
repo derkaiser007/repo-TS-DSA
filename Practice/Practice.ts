@@ -26,22 +26,7 @@ console.log(sortedNums)
 */
 
 
-function insertionSort(arr: number[]): number[]{
-    for(let i = 1; i < arr.length; i++){
-        for(let j = i; j > 0; j--){
-            if(arr[j-1] > arr[j]){
-                let temp: number = arr[j]
-                arr[j] = arr[j-1]
-                arr[j-1] = temp
-            }
-            else break;
-        }
-    }
-    return arr
-}
 
-console.log(insertionSort([567, 43, 89, 46578, 1, -987]))
-console.log(insertionSort([123,23,45,6,145,65,27,56,89,7890]))
 
 
 

@@ -21,19 +21,32 @@ const sortedNums: number[] = nums.slice().sort((a, b) => a-b)
 console.log(nums)
 console.log(sortedNums)
 */
-function insertionSort(arr) {
-    for (var i = 1; i < arr.length; i++) {
-        for (var j = i; j > 0; j--) {
-            if (arr[j - 1] > arr[j]) {
-                var temp = arr[j];
-                arr[j] = arr[j - 1];
-                arr[j - 1] = temp;
-            }
-            else
-                break;
+function mergeSort(arr) {
+    if (arr.length <= 1)
+        return arr;
+    var mid = Math.ceil(arr.length / 2);
+    var left = mergeSort(arr.slice(0, mid));
+    var right = mergeSort(arr.slice(mid));
+    return merge(left, right);
+}
+function merge(left, right) {
+    var newArr = [];
+    var i = 0;
+    var j = 0;
+    while (i < left.length && j < right.length) {
+        if (left[i] <= right[j]) {
+            newArr.push(left[i]);
+            i++;
+        }
+        else {
+            newArr.push(right[j]);
+            j++;
         }
     }
-    return arr;
+    if (i < left.length)
+        newArr.push.apply(newArr, left.splice(i));
+    else if (j < right.length)
+        newArr.push.apply(newArr, right.splice(j));
+    return newArr;
 }
-console.log(insertionSort([567, 43, 89, 46578, 1, -987]));
-console.log(insertionSort([123, 23, 45, 6, 145, 65, 27, 56, 89, 7890]));
+console.log(mergeSort([123, 23, 45, 6, 145, 65, 22, 27, 56, 89, 6, 7890, 23]));
