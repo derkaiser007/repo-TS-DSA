@@ -21,21 +21,19 @@ const sortedNums: number[] = nums.slice().sort((a, b) => a-b)
 console.log(nums)
 console.log(sortedNums)
 */
-function selectionSort(arr) {
-    var temp;
-    for (var i = 0; i < arr.length - 1; i++) {
-        var k = i;
-        for (var j = i + 1; j < arr.length; j++) {
-            if (arr[k] > arr[j])
-                k = j;
-        }
-        if (k !== i) {
-            temp = arr[i];
-            arr[i] = arr[k];
-            arr[k] = temp;
+function insertionSort(arr) {
+    for (var i = 1; i < arr.length; i++) {
+        for (var j = i; j > 0; j--) {
+            if (arr[j - 1] > arr[j]) {
+                var temp = arr[j];
+                arr[j] = arr[j - 1];
+                arr[j - 1] = temp;
+            }
+            else
+                break;
         }
     }
     return arr;
 }
-console.log(selectionSort([123, 23, 45, 6, 145, 65, 27, 56, 89, 7890]));
-console.log(selectionSort([567, 43, 89, -87, 1, -987]));
+console.log(insertionSort([567, 43, 89, 46578, 1, -987]));
+console.log(insertionSort([123, 23, 45, 6, 145, 65, 27, 56, 89, 7890]));

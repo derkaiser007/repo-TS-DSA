@@ -7,7 +7,7 @@ function insertion_sort(arr) {
                 var temp = arr[i - 1];
                 arr[i - 1] = arr[i];
                 arr[i] = temp;
-                i -= 1;
+                i--;
             }
             else
                 break;
@@ -17,3 +17,4 @@ function insertion_sort(arr) {
 }
 var array3 = [567, 43, 89, -87, 1, -987];
 console.log(insertion_sort(array3));
+console.log(insertion_sort([123, 23, 45, 6, 145, 65, 27, 56, 89, 7890]));
