@@ -1,8 +1,10 @@
 // tsc Sorting/Merge_Sort
 // node Sorting/Merge_Sort
 
+// Time Complexity: O(n log n), Dividing the array: log n, Merging the subarrays: n
+// Auxiliary Space Complexity: O(n)
 function merge_sort(arr: number[]): number[]{
-    if(arr.length <= 1) return arr
+    if(arr.length <= 1) return arr;
     
     const mid : number = Math.ceil(arr.length / 2)    
     let left = merge_sort(arr.slice(0, mid))

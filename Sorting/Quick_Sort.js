@@ -5,32 +5,31 @@ function quick_sort(arr, low, high) {
     if (high === void 0) { high = arr.length - 1; }
     if (low < high) {
         var pivotIndex = partition(arr, low, high);
-        quick_sort(arr, low, high = pivotIndex - 1);
-        quick_sort(arr, low = pivotIndex + 1, high);
+        quick_sort(arr, low, pivotIndex - 1);
+        quick_sort(arr, pivotIndex + 1, high);
     }
     return arr;
 }
 function partition(arr, low, high) {
     var i = low + 1;
     var j = low + 1;
+    var temp;
     while (i <= high) {
         if (arr[low] > arr[i]) {
-            i += 1;
-            j += 1;
             if (i !== j) {
-                var temp_1 = arr[i - 1];
-                arr[i - 1] = arr[j - 1];
-                arr[j - 1] = temp_1;
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
             }
+            j++;
         }
-        else {
-            i += 1;
-        }
+        i++;
     }
-    var temp = arr[low];
+    temp = arr[low];
     arr[low] = arr[j - 1];
     arr[j - 1] = temp;
     return j - 1;
 }
 var arr5 = [567, 43, 89, 46578, 1, -987];
 console.log(quick_sort(arr5));
+console.log(quick_sort([123, 27, 23, 56, 45, 6, 145, 65, 27, 56, 89, 23, 7890]));
