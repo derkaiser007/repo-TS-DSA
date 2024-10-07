@@ -21,35 +21,24 @@ const sortedNums: number[] = nums.slice().sort((a, b) => a-b)
 console.log(nums)
 console.log(sortedNums)
 */
-function quickSort(arr, start, end) {
-    if (start === void 0) { start = 0; }
-    if (end === void 0) { end = arr.length - 1; }
-    if (start < end) {
-        var pivotIndex = pivot(arr, start, end);
-        quickSort(arr, start, pivotIndex - 1);
-        quickSort(arr, pivotIndex + 1, end);
+/*
+let nestedArr: number[][] = new Array(10).fill(null).map(() => [])
+nestedArr[0].push(123)
+nestedArr[9].push(567)
+console.log(nestedArr)
+*/
+// Time Complexity: O(number of digits in maximum number * (length of array + base system))
+function radix_sort(arr) {
+    var length = String(Math.max.apply(Math, arr)).length;
+    for (var i = 1; i <= length; i++) {
+        // let nestedArr: number[][] = new Array(10).fill(null).map(() => [])
+        var nestedArr = Array.from({ length: 10 }, function () { return []; });
+        for (var j = 0; j < arr.length; j++) {
+            var index = Math.floor(arr[j] / Math.pow(10, (i - 1))) % 10;
+            nestedArr[index].push(arr[j]);
+        }
+        arr = nestedArr.flat();
     }
     return arr;
 }
-function pivot(arr, start, end) {
-    var i = start + 1;
-    var j = start + 1;
-    var temp;
-    while (i <= end) {
-        if (arr[start] > arr[i]) {
-            if (i !== j) {
-                temp = arr[j];
-                arr[j] = arr[i];
-                arr[i] = temp;
-            }
-            j++;
-        }
-        i++;
-    }
-    temp = arr[j - 1];
-    arr[j - 1] = arr[start];
-    arr[start] = temp;
-    return j - 1;
-}
-console.log(quickSort([123, 27, 23, 56, 45, 6, 145, 65, 27, 56, 89, 23, 7890]));
-console.log(quickSort([567, 43, 89, 46578, 1, -987]));
+console.log(radix_sort([1234, 23, 456, 23456, 7890, 54, 345789, 123, 4567, 2389, 7890]));
