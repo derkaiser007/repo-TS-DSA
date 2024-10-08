@@ -27,6 +27,7 @@ class DoublyLinkedList<T>{
             currentNode.next = newListNode
             newListNode.prev = currentNode        
         }
+        return `${newListNode.value} added successfully!`
     }
 
     insertAtHead(value: T){
@@ -37,60 +38,80 @@ class DoublyLinkedList<T>{
             newListNode.next = this.head
             this.head = newListNode
         }
+        return `${newListNode.value} added successfully!`
     }
 
     insertAtNext(value: T, referenceValue: T){
         const newListNode = new ListNode(value)
-        if(!this.head) console.error("Can't add the value beacuse reference value isn't found.");
+        if(!this.head) return `Empty List!`;
         else {
             let currentNode = this.head
             while(currentNode.value !== referenceValue){
-                if(!currentNode.next){
-                    console.error("Can't add the value beacuse reference value isn't found.");
-                    return
-                }
-                else currentNode = currentNode.next;
+                if(currentNode.next) currentNode = currentNode.next;
+                else return `${referenceValue} isn't in the list!`
             }
             newListNode.next = currentNode.next
             newListNode.prev = currentNode
-            if(newListNode.next){
-                newListNode.next.prev = newListNode
-            }
+            if(newListNode.next) newListNode.next.prev = newListNode;
             currentNode.next = newListNode             
         }
+        return `${newListNode.value} added successfully!`;
     }
 
     insertAtPrev(value: T, referenceValue: T){
         const newListNode = new ListNode(value)
-        if(!this.head) console.error("Can't add the value beacuse reference value isn't found.");
-        else if(this.head.value === referenceValue) {
-            this.head.prev = newListNode
-            newListNode.next = this.head
-            this.head = newListNode
-        }
+        if(!this.head) return `Empty List!`;
+        else if(this.head.value === referenceValue) return this.insertAtHead(newListNode.value);
         else {
             let currentNode = this.head
             while(currentNode.next?.value !== referenceValue){
                 if(currentNode.next) currentNode = currentNode.next;
-                else {
-                    console.error("Can't add the value beacuse reference value isn't found.");
-                    return
-                }
+                else return `${referenceValue} isn't in the list!`
             }
             newListNode.next = currentNode.next
-            newListNode.prev = currentNode
-            if(newListNode.next){
-                newListNode.next.prev = newListNode
-            }
+            currentNode.next.prev = newListNode
             currentNode.next = newListNode
+            newListNode.prev = currentNode
+        }
+        return `${newListNode.value} added successfully!`
+    }
+
+    searchingNode(value: T){
+        if(!this.head) return `Empty List!`;
+        else {
+            let currentNode = this.head
+            while(currentNode.value !== value){
+                if(currentNode.next) currentNode = currentNode.next;
+                else return `${value} isn't in the list!`;                                
+            }
+            return `${value} found successfully!`
         }
     }
 
-    traverseNode(){
-        if(!this.head){
-            console.log("No data found.")
-            return
-        } else {
+    deleteNode(value: T){
+        if(!this.head) return `Empty List!`;
+        else if(this.head.value === value){
+            if(this.head.next) {
+                this.head = this.head.next
+                this.head.prev = null 
+            }
+            else this.head = null;       
+        }
+        else{
+            let currentNode = this.head
+            while(currentNode.next?.value !== value){
+                if(currentNode?.next) currentNode = currentNode.next;
+                else return `${value} isn't in the list!`                 
+            }
+            currentNode.next = currentNode.next.next
+            if(currentNode.next?.prev) currentNode.next.prev = currentNode;   
+        }
+        return `${value} deleted successfully!`
+    }
+
+    traverseList(){
+        if(!this.head) return `Empty List!`;
+        else {
             let currentNode = this.head
             while(currentNode){
                 process.stdout.write(`${currentNode.value} <-> `)
@@ -101,56 +122,49 @@ class DoublyLinkedList<T>{
         }
     }
 
-    deleteNode(value: T){
-        if(!this.head) console.error("Can't find any value.");
-        else if(this.head.value === value) {
-            if(!this.head.next) {
-                console.error("null")
+    sizeOfList(){
+        let size: number = 0
+        if(!this.head) return `Size: 0`
+        else {
+            let currentNode = this.head
+            while(currentNode){
+                size++
+                if(currentNode.next) currentNode = currentNode.next;
+                else return `Size: ${size}`;
             }
-            else {
-                this.head = this.head.next
-                this.head.prev = null            
-            }           
-        }
-        else{
-            let currentNode = this.head.next
-            while(currentNode?.next?.value !== value){
-                if(!currentNode?.next){
-                    console.error("Can't find any value.");
-                    return
-                }
-                else currentNode = currentNode.next                
-            }
-            if(currentNode.next.next){
-                currentNode.next = currentNode.next.next
-                currentNode.next.prev = currentNode
-            } else {
-                currentNode.next = null
-            }            
-        }
+        }   
     }
+
 }
 
-const list = new DoublyLinkedList<number>()
-list.insertAtEnd(25)
-list.insertAtEnd(37)
-list.insertAtEnd(45)
-list.insertAtEnd(12)
-list.insertAtEnd(23)
-list.traverseNode()
-list.insertAtHead(91)
-list.traverseNode()
-list.insertAtNext(67, 45)
-list.traverseNode()
-list.insertAtPrev(89, 91)
-list.traverseNode()
-list.insertAtPrev(111, 45)
-list.traverseNode()
-list.insertAtPrev(125, 145)
-list.traverseNode()
-list.deleteNode(89)
-list.traverseNode()
-list.deleteNode(23)
-list.traverseNode()
-list.deleteNode(111)
-list.traverseNode()
+let list = new DoublyLinkedList<number | string | boolean>()
+console.log(list.traverseList())
+console.log(list.sizeOfList())
+console.log(list.insertAtEnd("niraj"))
+console.log(list.insertAtEnd(true))
+console.log(list.insertAtEnd(123))
+console.log(list.insertAtEnd("samar"))
+list.traverseList()
+console.log(list.insertAtHead(456))
+console.log(list.insertAtHead(false))
+list.traverseList()
+console.log(list.insertAtNext("samay", 123))
+console.log(list.insertAtNext("harshi", "samay"))
+console.log(list.insertAtNext(786, "samar"))
+list.traverseList()
+console.log(list.insertAtPrev(6789, "harshi"))
+console.log(list.insertAtPrev(1234, 6789))
+console.log(list.insertAtPrev("wxyz", false))
+list.traverseList()
+console.log(list.searchingNode("harshi"))
+console.log(list.searchingNode("wxyz"))
+console.log(list.searchingNode(786))
+console.log(list.deleteNode("samay"))
+console.log(list.deleteNode(786))
+console.log(list.deleteNode("wxyz"))
+list.traverseList()
+console.log(list.deleteNode("samar"))
+console.log(list.insertAtEnd("neer"))
+list.traverseList()
+console.log(list.sizeOfList())
+

@@ -83,7 +83,10 @@ class SinglyLinkedList<T>{
 
     deleteNode(value: T){
         if(!this.head) return `Empty List!`;
-        else if(this.head.value === value) this.head = this.head.next;
+        else if(this.head.value === value){
+            if(this.head.next) this.head = this.head.next;
+            else this.head = null;
+        }
         else{
             let currentNode = this.head
             while(currentNode.next?.value !== value){

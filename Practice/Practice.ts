@@ -46,16 +46,18 @@ class ListNode<T>{
 
 class DoublyLinkedList<T>{
     head: ListNode<T> | null = null
-    tail: ListNode<T> | null = null
 
     insertAtEnd(value: T){
         let node = new ListNode(value)
 
-        if(!this.head) this.head = this.tail = node;
-        else if(this.tail){
-            this.tail.next = node
-            node.prev = this.tail
-            this.tail = node
+        if(!this.head) this.head = node;
+        else {
+            let current = this.head
+            while(current.next){
+                current = current.next
+            }
+            current.next = node
+            node.prev = current
         }
         return `${node.value} added successfully!`
     }
@@ -63,7 +65,7 @@ class DoublyLinkedList<T>{
     insertAtHead(value: T){
         let node = new ListNode(value)
 
-        if(!this.head) this.head = this.tail = node;
+        if(!this.head) this.head = node;
         else {
             this.head.prev = node
             node.next = this.head
@@ -76,7 +78,6 @@ class DoublyLinkedList<T>{
         let node = new ListNode(value)
 
         if(!this.head) return `Empty List!`;
-        else if(this.tail?.value === referenceValue) return this.insertAtEnd(node.value);
         else {
             let current = this.head
             while(current.value !== referenceValue){
@@ -116,9 +117,9 @@ class DoublyLinkedList<T>{
             let current = this.head
             while(current.value !== value){
                 if(current.next) current = current.next;
-                else return `${value} found successfully!`                                
+                else return `${value} isn't in the list!`                                
             }
-            return `${value} isn't in the list!`
+            return `${value} found successfully!`
         }
     }
 
@@ -129,12 +130,75 @@ class DoublyLinkedList<T>{
                 this.head = this.head.next
                 this.head.prev = null
             } 
-            else {
-                
-            }
+            else this.head = null;
         }
         else {
-            let curr
+            let current = this.head
+            while(current.next?.value !== value){
+                if(current.next?.next) current = current.next;
+                else return `${value} isn't in the list!`
+            }
+            current.next = current.next.next
+            if(current.next?.prev) current.next.prev = current;
+        }
+        return `${value} deleted successfully!`
+    }
+
+    traverseList(){
+        if(!this.head) return `Empty List!`;
+        else {
+            let current = this.head
+            while(current){
+                process.stdout.write(`${current.value} <-> `)
+                if(current.next) current = current.next;
+                else break;
+            }
+            process.stdout.write(`null\n`)             
+        }
+    }
+
+    sizeOfList(){
+        let size: number = 0
+        if(!this.head) return `Size: 0`
+        else {
+            let current = this.head
+            while(current){
+                size++
+                if(current.next) current = current.next;
+                else return `Size: ${size}`;
+            }
         }
     }
 }
+
+let list = new DoublyLinkedList<number | string | boolean>()
+console.log(list.traverseList())
+console.log(list.sizeOfList())
+console.log(list.insertAtEnd("niraj"))
+console.log(list.insertAtEnd(true))
+console.log(list.insertAtEnd(123))
+console.log(list.insertAtEnd("samar"))
+list.traverseList()
+console.log(list.insertAtHead(456))
+console.log(list.insertAtHead(false))
+list.traverseList()
+console.log(list.insertAtNext("samay", 123))
+console.log(list.insertAtNext("harshi", "samay"))
+console.log(list.insertAtNext(786, "samar"))
+list.traverseList()
+console.log(list.insertAtPrev(6789, "harshi"))
+console.log(list.insertAtPrev(1234, 6789))
+console.log(list.insertAtPrev("wxyz", false))
+list.traverseList()
+console.log(list.searchingNode("harshi"))
+console.log(list.searchingNode("wxyz"))
+console.log(list.searchingNode(786))
+console.log(list.deleteNode("samay"))
+console.log(list.deleteNode(786))
+console.log(list.deleteNode("wxyz"))
+list.traverseList()
+console.log(list.deleteNode("samar"))
+console.log(list.insertAtEnd("neer"))
+list.traverseList()
+console.log(list.sizeOfList())
+

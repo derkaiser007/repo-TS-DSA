@@ -26,6 +26,7 @@ var DoublyLinkedList = /** @class */ (function () {
             currentNode.next = newListNode;
             newListNode.prev = currentNode;
         }
+        return "".concat(newListNode.value, " added successfully!");
     };
     DoublyLinkedList.prototype.insertAtHead = function (value) {
         var newListNode = new ListNode(value);
@@ -36,62 +37,93 @@ var DoublyLinkedList = /** @class */ (function () {
             newListNode.next = this.head;
             this.head = newListNode;
         }
+        return "".concat(newListNode.value, " added successfully!");
     };
     DoublyLinkedList.prototype.insertAtNext = function (value, referenceValue) {
         var newListNode = new ListNode(value);
         if (!this.head)
-            console.error("Can't add the value beacuse reference value isn't found.");
+            return "Empty List!";
         else {
             var currentNode = this.head;
             while (currentNode.value !== referenceValue) {
-                if (!currentNode.next) {
-                    console.error("Can't add the value beacuse reference value isn't found.");
-                    return;
-                }
-                else
+                if (currentNode.next)
                     currentNode = currentNode.next;
+                else
+                    return "".concat(referenceValue, " isn't in the list!");
             }
             newListNode.next = currentNode.next;
             newListNode.prev = currentNode;
-            if (newListNode.next) {
+            if (newListNode.next)
                 newListNode.next.prev = newListNode;
-            }
             currentNode.next = newListNode;
         }
+        return "".concat(newListNode.value, " added successfully!");
     };
     DoublyLinkedList.prototype.insertAtPrev = function (value, referenceValue) {
         var _a;
         var newListNode = new ListNode(value);
         if (!this.head)
-            console.error("Can't add the value beacuse reference value isn't found.");
-        else if (this.head.value === referenceValue) {
-            this.head.prev = newListNode;
-            newListNode.next = this.head;
-            this.head = newListNode;
-        }
+            return "Empty List!";
+        else if (this.head.value === referenceValue)
+            return this.insertAtHead(newListNode.value);
         else {
             var currentNode = this.head;
             while (((_a = currentNode.next) === null || _a === void 0 ? void 0 : _a.value) !== referenceValue) {
                 if (currentNode.next)
                     currentNode = currentNode.next;
-                else {
-                    console.error("Can't add the value beacuse reference value isn't found.");
-                    return;
-                }
+                else
+                    return "".concat(referenceValue, " isn't in the list!");
             }
             newListNode.next = currentNode.next;
-            newListNode.prev = currentNode;
-            if (newListNode.next) {
-                newListNode.next.prev = newListNode;
-            }
+            currentNode.next.prev = newListNode;
             currentNode.next = newListNode;
+            newListNode.prev = currentNode;
+        }
+        return "".concat(newListNode.value, " added successfully!");
+    };
+    DoublyLinkedList.prototype.searchingNode = function (value) {
+        if (!this.head)
+            return "Empty List!";
+        else {
+            var currentNode = this.head;
+            while (currentNode.value !== value) {
+                if (currentNode.next)
+                    currentNode = currentNode.next;
+                else
+                    return "".concat(value, " isn't in the list!");
+            }
+            return "".concat(value, " found successfully!");
         }
     };
-    DoublyLinkedList.prototype.traverseNode = function () {
-        if (!this.head) {
-            console.log("No data found.");
-            return;
+    DoublyLinkedList.prototype.deleteNode = function (value) {
+        var _a, _b;
+        if (!this.head)
+            return "Empty List!";
+        else if (this.head.value === value) {
+            if (this.head.next) {
+                this.head = this.head.next;
+                this.head.prev = null;
+            }
+            else
+                this.head = null;
         }
+        else {
+            var currentNode = this.head;
+            while (((_a = currentNode.next) === null || _a === void 0 ? void 0 : _a.value) !== value) {
+                if (currentNode === null || currentNode === void 0 ? void 0 : currentNode.next)
+                    currentNode = currentNode.next;
+                else
+                    return "".concat(value, " isn't in the list!");
+            }
+            currentNode.next = currentNode.next.next;
+            if ((_b = currentNode.next) === null || _b === void 0 ? void 0 : _b.prev)
+                currentNode.next.prev = currentNode;
+        }
+        return "".concat(value, " deleted successfully!");
+    };
+    DoublyLinkedList.prototype.traverseList = function () {
+        if (!this.head)
+            return "Empty List!";
         else {
             var currentNode = this.head;
             while (currentNode) {
@@ -104,60 +136,50 @@ var DoublyLinkedList = /** @class */ (function () {
             process.stdout.write("null\n");
         }
     };
-    DoublyLinkedList.prototype.deleteNode = function (value) {
-        var _a;
+    DoublyLinkedList.prototype.sizeOfList = function () {
+        var size = 0;
         if (!this.head)
-            console.error("Can't find any value.");
-        else if (this.head.value === value) {
-            if (!this.head.next) {
-                console.error("null");
-            }
-            else {
-                this.head = this.head.next;
-                this.head.prev = null;
-            }
-        }
+            return "Size: 0";
         else {
-            var currentNode = this.head.next;
-            while (((_a = currentNode === null || currentNode === void 0 ? void 0 : currentNode.next) === null || _a === void 0 ? void 0 : _a.value) !== value) {
-                if (!(currentNode === null || currentNode === void 0 ? void 0 : currentNode.next)) {
-                    console.error("Can't find any value.");
-                    return;
-                }
-                else
+            var currentNode = this.head;
+            while (currentNode) {
+                size++;
+                if (currentNode.next)
                     currentNode = currentNode.next;
-            }
-            if (currentNode.next.next) {
-                currentNode.next = currentNode.next.next;
-                currentNode.next.prev = currentNode;
-            }
-            else {
-                currentNode.next = null;
+                else
+                    return "Size: ".concat(size);
             }
         }
     };
     return DoublyLinkedList;
 }());
 var list = new DoublyLinkedList();
-list.insertAtEnd(25);
-list.insertAtEnd(37);
-list.insertAtEnd(45);
-list.insertAtEnd(12);
-list.insertAtEnd(23);
-list.traverseNode();
-list.insertAtHead(91);
-list.traverseNode();
-list.insertAtNext(67, 45);
-list.traverseNode();
-list.insertAtPrev(89, 91);
-list.traverseNode();
-list.insertAtPrev(111, 45);
-list.traverseNode();
-list.insertAtPrev(125, 145);
-list.traverseNode();
-list.deleteNode(89);
-list.traverseNode();
-list.deleteNode(23);
-list.traverseNode();
-list.deleteNode(111);
-list.traverseNode();
+console.log(list.traverseList());
+console.log(list.sizeOfList());
+console.log(list.insertAtEnd("niraj"));
+console.log(list.insertAtEnd(true));
+console.log(list.insertAtEnd(123));
+console.log(list.insertAtEnd("samar"));
+list.traverseList();
+console.log(list.insertAtHead(456));
+console.log(list.insertAtHead(false));
+list.traverseList();
+console.log(list.insertAtNext("samay", 123));
+console.log(list.insertAtNext("harshi", "samay"));
+console.log(list.insertAtNext(786, "samar"));
+list.traverseList();
+console.log(list.insertAtPrev(6789, "harshi"));
+console.log(list.insertAtPrev(1234, 6789));
+console.log(list.insertAtPrev("wxyz", false));
+list.traverseList();
+console.log(list.searchingNode("harshi"));
+console.log(list.searchingNode("wxyz"));
+console.log(list.searchingNode(786));
+console.log(list.deleteNode("samay"));
+console.log(list.deleteNode(786));
+console.log(list.deleteNode("wxyz"));
+list.traverseList();
+console.log(list.deleteNode("samar"));
+console.log(list.insertAtEnd("neer"));
+list.traverseList();
+console.log(list.sizeOfList());
