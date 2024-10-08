@@ -29,12 +29,10 @@ var Stack = /** @class */ (function () {
         var value = (_a = this.top) === null || _a === void 0 ? void 0 : _a.value;
         if (!this.top)
             return "Empty Stack!";
-        else {
-            if (!this.top.next)
-                this.top = null;
-            else
-                this.top = this.top.next;
-        }
+        else if (!this.top.next)
+            this.top = null;
+        else
+            this.top = this.top.next;
         this.size--;
         return "".concat(value, " removed successfully!");
     };

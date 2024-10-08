@@ -27,186 +27,88 @@ nestedArr[0].push(123)
 nestedArr[9].push(567)
 console.log(nestedArr)
 */
-var ListNode = /** @class */ (function () {
-    function ListNode(value) {
-        this.prev = null;
+var StackNode = /** @class */ (function () {
+    function StackNode(value) {
         this.next = null;
         this.value = value;
-        this.prev = null;
         this.next = null;
     }
-    return ListNode;
+    return StackNode;
 }());
-var DoublyLinkedList = /** @class */ (function () {
-    function DoublyLinkedList() {
+var Stack = /** @class */ (function () {
+    function Stack() {
         this.head = null;
+        this.size = 0;
     }
-    DoublyLinkedList.prototype.insertAtEnd = function (value) {
-        var node = new ListNode(value);
+    Stack.prototype.push = function (value) {
+        var node = new StackNode(value);
         if (!this.head)
             this.head = node;
         else {
-            var current = this.head;
-            while (current.next) {
-                current = current.next;
-            }
-            current.next = node;
-            node.prev = current;
-        }
-        return "".concat(node.value, " added successfully!");
-    };
-    DoublyLinkedList.prototype.insertAtHead = function (value) {
-        var node = new ListNode(value);
-        if (!this.head)
-            this.head = node;
-        else {
-            this.head.prev = node;
             node.next = this.head;
             this.head = node;
         }
-        return "".concat(node.value, " added successfully!");
+        this.size++;
+        return "".concat(value, " added successfully!");
     };
-    DoublyLinkedList.prototype.insertAtNext = function (value, referenceValue) {
-        var node = new ListNode(value);
+    Stack.prototype.pop = function () {
+        var _a;
+        var val = (_a = this.head) === null || _a === void 0 ? void 0 : _a.value;
         if (!this.head)
-            return "Empty List!";
-        else {
-            var current = this.head;
-            while (current.value !== referenceValue) {
-                if (current.next)
-                    current = current.next;
-                else
-                    return "".concat(referenceValue, " isn't in the list!");
-            }
-            node.next = current.next;
-            if (current.next)
-                current.next.prev = node;
-            current.next = node;
-            node.prev = current;
-        }
-        return "".concat(node.value, " added successfully!");
+            return "Empty Stack!";
+        else if (!this.head.next)
+            this.head = null;
+        else
+            this.head = this.head.next;
+        this.size--;
+        return "".concat(val, " removed successfully!");
     };
-    DoublyLinkedList.prototype.insertAtPrev = function (value, referenceValue) {
-        var _a, _b;
-        var node = new ListNode(value);
+    Stack.prototype.peek = function () {
         if (!this.head)
-            return "Empty List!";
-        else if (this.head.value === referenceValue)
-            return this.insertAtHead(node.value);
-        else {
-            var current = this.head;
-            while (((_a = current.next) === null || _a === void 0 ? void 0 : _a.value) !== referenceValue) {
-                if ((_b = current.next) === null || _b === void 0 ? void 0 : _b.next)
-                    current = current.next;
-                else
-                    return "".concat(referenceValue, " isn't in the list!");
-            }
-            node.next = current.next;
-            current.next.prev = node;
-            current.next = node;
-            node.prev = current;
-        }
-        return "".concat(node.value, " added successfully!");
+            return "Empty Stack!";
+        else
+            return this.head.value;
     };
-    DoublyLinkedList.prototype.searchingNode = function (value) {
+    Stack.prototype.isEmpty = function () {
         if (!this.head)
-            return "Empty List!";
-        else {
-            var current = this.head;
-            while (current.value !== value) {
-                if (current.next)
-                    current = current.next;
-                else
-                    return "".concat(value, " found successfully!");
-            }
-            return "".concat(value, " isn't in the list!");
-        }
+            return "Yes, Stack is empty!";
+        else
+            return "No, Stack isn't empty!";
     };
-    DoublyLinkedList.prototype.deleteNode = function (value) {
-        var _a, _b, _c;
-        if (!this.head)
-            return "Empty List!";
-        else if (this.head.value === value) {
-            if (this.head.next) {
-                this.head = this.head.next;
-                this.head.prev = null;
-            }
-            else
-                this.head = null;
-        }
-        else {
-            var current = this.head;
-            while (((_a = current.next) === null || _a === void 0 ? void 0 : _a.value) !== value) {
-                if ((_b = current.next) === null || _b === void 0 ? void 0 : _b.next)
-                    current = current.next;
-                else
-                    return "".concat(value, " isn't in the list!");
-            }
-            current.next = current.next.next;
-            if ((_c = current.next) === null || _c === void 0 ? void 0 : _c.prev)
-                current.next.prev = current;
-        }
-        return "".concat(value, " deleted successfully!");
+    Stack.prototype.stackSize = function () {
+        return "Stack Size: ".concat(this.size);
     };
-    DoublyLinkedList.prototype.traverseList = function () {
-        if (!this.head)
-            return "Empty List!";
-        else {
-            var current = this.head;
-            while (current) {
-                process.stdout.write("".concat(current.value, " <-> "));
-                if (current.next)
-                    current = current.next;
-                else
-                    break;
-            }
-            process.stdout.write("null\n");
-        }
-    };
-    DoublyLinkedList.prototype.sizeOfList = function () {
-        var size = 0;
-        if (!this.head)
-            return "Size: 0";
-        else {
-            var current = this.head;
-            while (current) {
-                size++;
-                if (current.next)
-                    current = current.next;
-                else
-                    return "Size: ".concat(size);
-            }
-        }
-    };
-    return DoublyLinkedList;
+    return Stack;
 }());
-var list = new DoublyLinkedList();
-console.log(list.traverseList());
-console.log(list.sizeOfList());
-console.log(list.insertAtEnd("niraj"));
-console.log(list.insertAtEnd(true));
-console.log(list.insertAtEnd(123));
-console.log(list.insertAtEnd("samar"));
-list.traverseList();
-console.log(list.insertAtHead(456));
-console.log(list.insertAtHead(false));
-list.traverseList();
-console.log(list.insertAtNext("samay", 123));
-console.log(list.insertAtNext("harshi", "samay"));
-console.log(list.insertAtNext(786, "samar"));
-list.traverseList();
-console.log(list.insertAtPrev(6789, "harshi"));
-console.log(list.insertAtPrev(1234, 6789));
-console.log(list.insertAtPrev("wxyz", false));
-list.traverseList();
-console.log(list.searchingNode("harshi"));
-console.log(list.searchingNode("wxyz"));
-console.log(list.searchingNode(786));
-console.log(list.deleteNode("samay"));
-console.log(list.deleteNode(786));
-console.log(list.deleteNode("wxyz"));
-list.traverseList();
-console.log(list.deleteNode("samar"));
-console.log(list.insertAtEnd("neer"));
-list.traverseList();
-console.log(list.sizeOfList());
+var stack = new Stack();
+console.log(stack.isEmpty());
+console.log(stack.push(true));
+console.log(stack.stackSize());
+console.log(stack.push(34));
+console.log(stack.stackSize());
+console.log(stack.push("niraj"));
+console.log(stack.stackSize());
+console.log(stack.push(false));
+console.log(stack.stackSize());
+console.log(stack.push(786));
+console.log(stack.stackSize());
+console.log(stack.isEmpty());
+console.log(stack.peek());
+console.log(stack.pop());
+console.log(stack.stackSize());
+console.log(stack.peek());
+console.log(stack.pop());
+console.log(stack.stackSize());
+console.log(stack.peek());
+console.log(stack.pop());
+console.log(stack.stackSize());
+console.log(stack.peek());
+console.log(stack.pop());
+console.log(stack.stackSize());
+console.log(stack.peek());
+console.log(stack.pop());
+console.log(stack.stackSize());
+console.log(stack.peek());
+console.log(stack.pop());
+console.log(stack.stackSize());
+console.log(stack.isEmpty());

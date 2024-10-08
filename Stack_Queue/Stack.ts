@@ -28,11 +28,11 @@ class Stack<V> {
 
     pop(): string {
         const value = this.top?.value
+
         if(!this.top) return "Empty Stack!"
-        else {
-            if(!this.top.next) this.top = null;
-            else this.top = this.top.next;
-        }
+        else if(!this.top.next) this.top = null;
+        else this.top = this.top.next;
+        
         this.size--
         return `${value} removed successfully!`
     }
@@ -43,7 +43,7 @@ class Stack<V> {
     }
 
     isEmpty(): any {
-        if(!this.top) return "Empty Stack!";
+        if(!this.top) return "Stack is empty!";
         else return "Stack isn't empty!"
     }
 
