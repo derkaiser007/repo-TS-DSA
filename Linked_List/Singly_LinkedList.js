@@ -11,91 +11,157 @@ var ListNode = /** @class */ (function () {
 var SinglyLinkedList = /** @class */ (function () {
     function SinglyLinkedList() {
         this.head = null;
+        this.tail = null;
     }
     SinglyLinkedList.prototype.insertAtEnd = function (value) {
         var newListNode = new ListNode(value);
-        if (!this.head) {
-            this.head = newListNode;
+        if (!this.head)
+            this.head = this.tail = newListNode;
+        else if (this.tail) {
+            this.tail.next = newListNode;
+            this.tail = newListNode;
         }
-        else {
-            var currentNode = this.head;
-            while (currentNode.next !== null) {
-                currentNode = currentNode.next;
-            }
-            currentNode.next = newListNode;
-        }
+        return "".concat(newListNode.value, " added successfully!");
     };
     SinglyLinkedList.prototype.insertAtHead = function (value) {
         var newListNode = new ListNode(value);
         if (!this.head)
-            this.head = newListNode;
+            this.head = this.tail = newListNode;
         else {
             newListNode.next = this.head;
             this.head = newListNode;
         }
+        return "".concat(newListNode.value, " added successfully!");
     };
-    SinglyLinkedList.prototype.insertInBetween = function (value, referenceValue) {
+    SinglyLinkedList.prototype.insertBefore = function (value, referenceValue) {
         var newListNode = new ListNode(value);
         if (!this.head)
-            console.error("Can't add the value because reference value isn't found.");
+            return "Empty List!";
+        else if (this.head.value === referenceValue)
+            return this.insertAtHead(newListNode.value);
+        else {
+            var current = this.head;
+            while (current.next && current.next.value !== referenceValue) {
+                if (current.next.next)
+                    current = current.next;
+                else
+                    return "".concat(referenceValue, " isn't available!");
+            }
+            newListNode.next = current.next;
+            current.next = newListNode;
+        }
+        return "".concat(newListNode.value, " added successfully!");
+    };
+    SinglyLinkedList.prototype.insertAfter = function (value, referenceValue) {
+        var newListNode = new ListNode(value);
+        if (!this.head)
+            return "Empty List!";
         else {
             var currentNode = this.head;
             while (currentNode.value !== referenceValue) {
                 if (!currentNode.next)
-                    console.error("Can't add the value because reference value isn't found.");
+                    return "".concat(referenceValue, " isn't available!");
                 else
                     currentNode = currentNode.next;
             }
             newListNode.next = currentNode.next;
             currentNode.next = newListNode;
         }
+        return "".concat(newListNode.value, " added successfully!");
+    };
+    SinglyLinkedList.prototype.searchingValue = function (value) {
+        if (!this.head)
+            return "Empty List!";
+        else {
+            var currentNode = this.head;
+            while (currentNode.value !== value) {
+                if (currentNode === null || currentNode === void 0 ? void 0 : currentNode.next)
+                    currentNode = currentNode.next;
+                else
+                    return "".concat(value, " isn't in the list!");
+            }
+            return "".concat(value, " found successfully!");
+        }
+    };
+    SinglyLinkedList.prototype.deleteNode = function (value) {
+        var _a, _b, _c;
+        if (!this.head)
+            return "Empty List!";
+        else if (this.head.value === value)
+            this.head = this.head.next;
+        else {
+            var currentNode = this.head;
+            while (((_a = currentNode.next) === null || _a === void 0 ? void 0 : _a.value) !== value) {
+                if ((_b = currentNode.next) === null || _b === void 0 ? void 0 : _b.next)
+                    currentNode = currentNode.next;
+                else
+                    return "".concat(value, " isn't in the list!");
+            }
+            if (!((_c = currentNode.next) === null || _c === void 0 ? void 0 : _c.next))
+                currentNode.next = null;
+            else
+                currentNode.next = currentNode.next.next;
+        }
+        return "".concat(value, " is deleted successfully!");
     };
     SinglyLinkedList.prototype.traverseList = function () {
         if (!this.head)
-            console.error("Nothing Found!");
+            return "Empty List!";
         else {
             var currentNode = this.head;
             while (currentNode) {
                 process.stdout.write("".concat(currentNode.value, " -> "));
                 if (currentNode.next)
                     currentNode = currentNode.next;
+                else {
+                    process.stdout.write("null\n");
+                    break;
+                }
+            }
+        }
+    };
+    SinglyLinkedList.prototype.sizeOfList = function () {
+        var size = 0;
+        if (!this.head)
+            return "Size: 0";
+        else {
+            var currentNode = this.head;
+            while (currentNode) {
+                size++;
+                if (currentNode.next)
+                    currentNode = currentNode.next;
                 else
                     break;
             }
-            process.stdout.write("null\n");
         }
-    };
-    SinglyLinkedList.prototype.deleteNode = function (value) {
-        var _a;
-        if (!this.head)
-            console.log("Nothing Found!");
-        else if (this.head === value) {
-            this.head = this.head.next;
-            console.log("Value deleted successfully.");
-            return;
-        }
-        else {
-            var currentNode = this.head;
-            while (((_a = currentNode.next) === null || _a === void 0 ? void 0 : _a.value) !== value) {
-                if (currentNode.next)
-                    currentNode = currentNode.next;
-            }
-            currentNode.next = currentNode.next.next;
-            console.log("Value deleted successfully.");
-        }
+        return "Size: ".concat(size);
     };
     return SinglyLinkedList;
 }());
 var list = new SinglyLinkedList();
-list.insertAtEnd(25);
-list.insertAtEnd(27);
-list.insertAtEnd(15);
-list.insertAtEnd(43);
-list.insertAtEnd(57);
+console.log(list.traverseList());
+console.log(list.sizeOfList());
+console.log(list.insertAtEnd("niraj"));
+console.log(list.insertAtEnd(true));
+console.log(list.insertAtEnd(123));
+console.log(list.insertAtEnd("samar"));
 list.traverseList();
-list.insertAtHead(11);
+console.log(list.insertAtHead(456));
+console.log(list.insertAtHead(false));
 list.traverseList();
-list.insertInBetween(92, 15);
+console.log(list.insertAfter("samay", 123));
+console.log(list.insertAfter("harshi", "samay"));
+console.log(list.insertAfter(786, "samar"));
 list.traverseList();
-list.deleteNode(92);
+console.log(list.insertBefore(6789, "harshi"));
+console.log(list.insertBefore(1234, 6789));
+console.log(list.insertBefore("wxyz", false));
 list.traverseList();
+console.log(list.searchingValue("harshi"));
+console.log(list.searchingValue("wxyz"));
+console.log(list.searchingValue(786));
+console.log(list.deleteNode("samay"));
+console.log(list.deleteNode(786));
+console.log(list.deleteNode("wxyz"));
+list.traverseList();
+console.log(list.sizeOfList());

@@ -13,84 +13,142 @@ class ListNode<T> {
 
 class SinglyLinkedList<T>{
     head: ListNode<T> | null = null;
+    tail: ListNode<T> | null = null;
 
-    insertAtEnd(value: T): void{
+    insertAtEnd(value: T){
         const newListNode = new ListNode(value)
-        if(!this.head){
-            this.head = newListNode
-        } else {
-            let currentNode = this.head
-            while(currentNode.next !== null){
-                currentNode = currentNode.next
-            }     
-            currentNode.next = newListNode 
-        }  
+        if(!this.head) this.head = this.tail = newListNode;
+        else if(this.tail){
+            this.tail.next = newListNode
+            this.tail = newListNode
+        } 
+        return `${newListNode.value} added successfully!`  
     } 
 
     insertAtHead(value:T){
         const newListNode = new ListNode(value)
-        if(!this.head) this.head = newListNode;
+        if(!this.head) this.head = this.tail = newListNode;
         else {
             newListNode.next = this.head
             this.head = newListNode
         }
+        return `${newListNode.value} added successfully!` 
     }
 
-    insertInBetween(value: T, referenceValue: T){
+    insertBefore(value: T, referenceValue: T){
         const newListNode = new ListNode(value)
-        if(!this.head) console.error("Can't add the value because reference value isn't found.");
+
+        if(!this.head) return "Empty List!";
+        else if(this.head.value === referenceValue) return this.insertAtHead(newListNode.value);
+        else{
+            let current = this.head
+            while(current.next && current.next.value !== referenceValue){
+                if(current.next.next) current = current.next;
+                else return `${referenceValue} isn't available!`;
+            }
+            newListNode.next = current.next
+            current.next = newListNode
+        }
+        return `${newListNode.value} added successfully!` 
+    } 
+    
+    insertAfter(value: T, referenceValue: T){
+        const newListNode = new ListNode(value)
+        if(!this.head) return `Empty List!`;
         else {
             let currentNode = this.head
             while(currentNode.value !== referenceValue){
-                if(!currentNode.next) console.error("Can't add the value because reference value isn't found.");
+                if(!currentNode.next) return `${referenceValue} isn't available!`;
                 else currentNode = currentNode.next;                
             }
             newListNode.next = currentNode.next
             currentNode.next = newListNode
         }
-    }   
+        return `${newListNode.value} added successfully!` 
+    }
+
+    searchingValue(value: T){
+        if(!this.head) return `Empty List!`;
+        else{
+            let currentNode = this.head
+            while(currentNode.value !== value){
+                if(currentNode?.next) currentNode = currentNode.next;
+                else return `${value} isn't in the list!`;
+            }
+            return `${value} found successfully!`
+        }
+    }
+
+    deleteNode(value: T){
+        if(!this.head) return `Empty List!`;
+        else if(this.head.value === value) this.head = this.head.next;
+        else{
+            let currentNode = this.head
+            while(currentNode.next?.value !== value){
+                if(currentNode.next?.next) currentNode = currentNode.next;
+                else return `${value} isn't in the list!`;
+            }
+            if(!currentNode.next?.next) currentNode.next = null;
+            else currentNode.next = currentNode.next.next
+        }
+        return `${value} is deleted successfully!`;
+    }
     
     traverseList(){
-        if(!this.head) console.error("Nothing Found!");
+        if(!this.head) return `Empty List!`;
         else{
             let currentNode = this.head
             while(currentNode){
                 process.stdout.write(`${currentNode.value} -> `)
                 if(currentNode.next) currentNode = currentNode.next;
-                else break;
+                else{
+                    process.stdout.write(`null\n`)
+                    break
+                }
             }
-            process.stdout.write(`null\n`)
         }
     }
 
-    deleteNode(value: T){
-        if(!this.head) console.log("Nothing Found!");
-        else if(this.head === value) {
-            this.head = this.head.next
-            console.log("Value deleted successfully.")
-            return
-        } else {
+    sizeOfList(){
+        let size: number = 0
+        if(!this.head) return `Size: 0`
+        else {
             let currentNode = this.head
-            while(currentNode.next?.value !== value){
-                if(currentNode.next) currentNode = currentNode.next                                               
+            while(currentNode){
+                size++
+                if(currentNode.next) currentNode = currentNode.next;
+                else break;
             }
-            currentNode.next = currentNode.next.next 
-            console.log("Value deleted successfully.")
         }
+        return `Size: ${size}`
     }
 }
 
-const list = new SinglyLinkedList<number>()
-list.insertAtEnd(25)
-list.insertAtEnd(27)
-list.insertAtEnd(15)
-list.insertAtEnd(43)
-list.insertAtEnd(57)
+let list = new SinglyLinkedList<number | string | boolean>()
+console.log(list.traverseList())
+console.log(list.sizeOfList())
+console.log(list.insertAtEnd("niraj"))
+console.log(list.insertAtEnd(true))
+console.log(list.insertAtEnd(123))
+console.log(list.insertAtEnd("samar"))
 list.traverseList()
-list.insertAtHead(11)
+console.log(list.insertAtHead(456))
+console.log(list.insertAtHead(false))
 list.traverseList()
-list.insertInBetween(92, 15)
+console.log(list.insertAfter("samay", 123))
+console.log(list.insertAfter("harshi", "samay"))
+console.log(list.insertAfter(786, "samar"))
 list.traverseList()
-list.deleteNode(92)
+console.log(list.insertBefore(6789, "harshi"))
+console.log(list.insertBefore(1234, 6789))
+console.log(list.insertBefore("wxyz", false))
 list.traverseList()
+console.log(list.searchingValue("harshi"))
+console.log(list.searchingValue("wxyz"))
+console.log(list.searchingValue(786))
+console.log(list.deleteNode("samay"))
+console.log(list.deleteNode(786))
+console.log(list.deleteNode("wxyz"))
+list.traverseList()
+console.log(list.sizeOfList())
 
