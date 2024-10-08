@@ -13,21 +13,23 @@ class ListNode<T> {
 
 class SinglyLinkedList<T>{
     head: ListNode<T> | null = null;
-    tail: ListNode<T> | null = null;
 
     insertAtEnd(value: T){
         const newListNode = new ListNode(value)
-        if(!this.head) this.head = this.tail = newListNode;
-        else if(this.tail){
-            this.tail.next = newListNode
-            this.tail = newListNode
+        if(!this.head) this.head = newListNode;
+        else {
+            let currentNode = this.head
+            while(currentNode.next){
+                currentNode = currentNode.next
+            }
+            currentNode.next = newListNode
         } 
         return `${newListNode.value} added successfully!`  
     } 
 
     insertAtHead(value:T){
         const newListNode = new ListNode(value)
-        if(!this.head) this.head = this.tail = newListNode;
+        if(!this.head) this.head = newListNode;
         else {
             newListNode.next = this.head
             this.head = newListNode
@@ -67,7 +69,7 @@ class SinglyLinkedList<T>{
         return `${newListNode.value} added successfully!` 
     }
 
-    searchingValue(value: T){
+    searchingNode(value: T){
         if(!this.head) return `Empty List!`;
         else{
             let currentNode = this.head
@@ -143,12 +145,15 @@ console.log(list.insertBefore(6789, "harshi"))
 console.log(list.insertBefore(1234, 6789))
 console.log(list.insertBefore("wxyz", false))
 list.traverseList()
-console.log(list.searchingValue("harshi"))
-console.log(list.searchingValue("wxyz"))
-console.log(list.searchingValue(786))
+console.log(list.searchingNode("harshi"))
+console.log(list.searchingNode("wxyz"))
+console.log(list.searchingNode(786))
 console.log(list.deleteNode("samay"))
 console.log(list.deleteNode(786))
 console.log(list.deleteNode("wxyz"))
+list.traverseList()
+console.log(list.deleteNode("samar"))
+console.log(list.insertAtEnd("neer"))
 list.traverseList()
 console.log(list.sizeOfList())
 

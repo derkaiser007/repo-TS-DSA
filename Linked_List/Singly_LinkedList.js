@@ -11,22 +11,24 @@ var ListNode = /** @class */ (function () {
 var SinglyLinkedList = /** @class */ (function () {
     function SinglyLinkedList() {
         this.head = null;
-        this.tail = null;
     }
     SinglyLinkedList.prototype.insertAtEnd = function (value) {
         var newListNode = new ListNode(value);
         if (!this.head)
-            this.head = this.tail = newListNode;
-        else if (this.tail) {
-            this.tail.next = newListNode;
-            this.tail = newListNode;
+            this.head = newListNode;
+        else {
+            var currentNode = this.head;
+            while (currentNode.next) {
+                currentNode = currentNode.next;
+            }
+            currentNode.next = newListNode;
         }
         return "".concat(newListNode.value, " added successfully!");
     };
     SinglyLinkedList.prototype.insertAtHead = function (value) {
         var newListNode = new ListNode(value);
         if (!this.head)
-            this.head = this.tail = newListNode;
+            this.head = newListNode;
         else {
             newListNode.next = this.head;
             this.head = newListNode;
@@ -69,7 +71,7 @@ var SinglyLinkedList = /** @class */ (function () {
         }
         return "".concat(newListNode.value, " added successfully!");
     };
-    SinglyLinkedList.prototype.searchingValue = function (value) {
+    SinglyLinkedList.prototype.searchingNode = function (value) {
         if (!this.head)
             return "Empty List!";
         else {
@@ -157,11 +159,14 @@ console.log(list.insertBefore(6789, "harshi"));
 console.log(list.insertBefore(1234, 6789));
 console.log(list.insertBefore("wxyz", false));
 list.traverseList();
-console.log(list.searchingValue("harshi"));
-console.log(list.searchingValue("wxyz"));
-console.log(list.searchingValue(786));
+console.log(list.searchingNode("harshi"));
+console.log(list.searchingNode("wxyz"));
+console.log(list.searchingNode(786));
 console.log(list.deleteNode("samay"));
 console.log(list.deleteNode(786));
 console.log(list.deleteNode("wxyz"));
+list.traverseList();
+console.log(list.deleteNode("samar"));
+console.log(list.insertAtEnd("neer"));
 list.traverseList();
 console.log(list.sizeOfList());
