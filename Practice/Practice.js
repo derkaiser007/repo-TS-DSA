@@ -27,88 +27,85 @@ nestedArr[0].push(123)
 nestedArr[9].push(567)
 console.log(nestedArr)
 */
-var StackNode = /** @class */ (function () {
-    function StackNode(value) {
+var QueueNode = /** @class */ (function () {
+    function QueueNode(value) {
         this.next = null;
         this.value = value;
         this.next = null;
     }
-    return StackNode;
+    return QueueNode;
 }());
-var Stack = /** @class */ (function () {
-    function Stack() {
+var Queue = /** @class */ (function () {
+    function Queue() {
         this.head = null;
+        this.tail = null;
         this.size = 0;
     }
-    Stack.prototype.push = function (value) {
-        var node = new StackNode(value);
+    Queue.prototype.enqueue = function (value) {
+        var node = new QueueNode(value);
         if (!this.head)
-            this.head = node;
-        else {
-            node.next = this.head;
-            this.head = node;
+            this.head = this.tail = node;
+        else if (this.tail) {
+            this.tail.next = node;
+            this.tail = node;
         }
         this.size++;
         return "".concat(value, " added successfully!");
     };
-    Stack.prototype.pop = function () {
+    Queue.prototype.dequeue = function () {
         var _a;
         var val = (_a = this.head) === null || _a === void 0 ? void 0 : _a.value;
         if (!this.head)
-            return "Empty Stack!";
+            return "Empty Queue!";
         else if (!this.head.next)
-            this.head = null;
+            this.head = this.tail = null;
         else
             this.head = this.head.next;
         this.size--;
         return "".concat(val, " removed successfully!");
     };
-    Stack.prototype.peek = function () {
+    Queue.prototype.frontElement = function () {
         if (!this.head)
-            return "Empty Stack!";
+            return "Empty Queue!";
         else
             return this.head.value;
     };
-    Stack.prototype.isEmpty = function () {
+    Queue.prototype.isEmpty = function () {
         if (!this.head)
-            return "Yes, Stack is empty!";
+            return "Yes, Queue is empty!";
         else
-            return "No, Stack isn't empty!";
+            return "No, Queue isn't empty!";
     };
-    Stack.prototype.stackSize = function () {
-        return "Stack Size: ".concat(this.size);
+    Queue.prototype.queueSize = function () {
+        return "Size: ".concat(this.size);
     };
-    return Stack;
+    return Queue;
 }());
-var stack = new Stack();
-console.log(stack.isEmpty());
-console.log(stack.push(true));
-console.log(stack.stackSize());
-console.log(stack.push(34));
-console.log(stack.stackSize());
-console.log(stack.push("niraj"));
-console.log(stack.stackSize());
-console.log(stack.push(false));
-console.log(stack.stackSize());
-console.log(stack.push(786));
-console.log(stack.stackSize());
-console.log(stack.isEmpty());
-console.log(stack.peek());
-console.log(stack.pop());
-console.log(stack.stackSize());
-console.log(stack.peek());
-console.log(stack.pop());
-console.log(stack.stackSize());
-console.log(stack.peek());
-console.log(stack.pop());
-console.log(stack.stackSize());
-console.log(stack.peek());
-console.log(stack.pop());
-console.log(stack.stackSize());
-console.log(stack.peek());
-console.log(stack.pop());
-console.log(stack.stackSize());
-console.log(stack.peek());
-console.log(stack.pop());
-console.log(stack.stackSize());
-console.log(stack.isEmpty());
+var queue = new Queue();
+console.log(queue.isEmpty());
+console.log(queue.queueSize());
+console.log(queue.enqueue(true));
+console.log(queue.queueSize());
+console.log(queue.enqueue("niraj"));
+console.log(queue.queueSize());
+console.log(queue.enqueue(786));
+console.log(queue.queueSize());
+console.log(queue.enqueue(456));
+console.log(queue.queueSize());
+console.log(queue.isEmpty());
+console.log(queue.frontElement());
+console.log(queue.dequeue());
+console.log(queue.queueSize());
+console.log(queue.frontElement());
+console.log(queue.dequeue());
+console.log(queue.queueSize());
+console.log(queue.frontElement());
+console.log(queue.dequeue());
+console.log(queue.queueSize());
+console.log(queue.frontElement());
+console.log(queue.dequeue());
+console.log(queue.queueSize());
+console.log(queue.frontElement());
+console.log(queue.dequeue());
+console.log(queue.queueSize());
+console.log(queue.isEmpty());

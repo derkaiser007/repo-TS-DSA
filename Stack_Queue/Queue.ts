@@ -31,19 +31,18 @@ class Queue<V> {
 
     dequeue(): string {
         const value = this.front?.value
-        if(!this.front && !this.rear) return `Empty Queue!`;
-        else if(this.front === this.rear) {
-            this.front = this.rear = null
-        } else {
-            if(this.front?.next) this.front = this.front?.next
-        }
+
+        if(!this.front) return `Empty Queue!`;
+        else if(!this.front.next) this.front = this.rear = null;
+        else this.front = this.front.next;
+
         this.size--
         return `${value} removed successfully!`
     }
 
     frontElement(): V | string {
         if(!this.front) return `Empty Queue!`;
-        return `${this.front.value}`
+        return this.front.value;
     }
 
     isEmpty(): string {
@@ -51,8 +50,8 @@ class Queue<V> {
         return`Queue isn't empty!`
     }
 
-    queueSize(): number {
-        return this.size
+    queueSize(): string {
+        return `Size: ${this.size}`
     }
 }
 
