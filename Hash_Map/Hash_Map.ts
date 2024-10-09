@@ -3,49 +3,64 @@
 
 // ####Hash Map with Objects#### //
 
-// let hashMap: { [key: string]: number } = {};
-// hashMap["apple"] = 5;
-// hashMap["banana"] = 25;
-// console.log(hashMap);
-// console.log(hashMap["apple"]);
+// let HashMap: {[key: number]: string} = {}
+// HashMap[5] = "apple"
+// HashMap[25] = "banana"
+// console.log(HashMap)
+// console.log(HashMap[5])
+// console.log(HashMap[35])
+// console.log(delete HashMap[5])  // true
+// console.log(delete HashMap[15]) // true -> showing same result
+// console.log(HashMap)
+// HashMap[5] = "guava"
+// console.log(HashMap)
 
-// let hashMap: { [key: symbol]: number } = {};
+// let HashMap: { [key: symbol]: number } = {};
 // let appleSymbol: symbol = Symbol("apple")
-// hashMap[appleSymbol] = 5;
+// HashMap[appleSymbol] = 5;
 // let bananaSymbol: symbol = Symbol("banana")
-// hashMap[bananaSymbol] = 25;
-// console.log(hashMap);
-// console.log(hashMap[appleSymbol]);
+// HashMap[bananaSymbol] = 25;
+// console.log(HashMap);
+// console.log(HashMap[appleSymbol]);
+// console.log(HashMap["guavaSymbol"])
+// console.log(delete HashMap[appleSymbol])  // true
+// console.log(delete HashMap["guavaSymbol"]) // true -> showing same result
+// console.log(HashMap);
+// HashMap[appleSymbol] = 125;
+// console.log(HashMap);
 
 
 
 // ####Map Class#### //
 
-// let map: Map<string, number> = new Map();
-// map.set("apple", 5);
-// map.set("banana", 25);
-// console.log(map)
-// console.log(map.get("apple"));
-// console.log(map.get("guava"));
-// console.log(map.has("banana"))
-// console.log(map.has("guava"))
-// console.log(map.delete("banana"))
-// console.log(map)
+// let HashMap: Map<number, string> = new Map()
+// console.log(HashMap.set(5, "apple"))
+// console.log(HashMap.set(15, "banana"))
+// console.log(HashMap.set(25, "guava"))
+// console.log(HashMap)
+// console.log(HashMap.get(25))
+// console.log(HashMap.get(35))
+// console.log(HashMap.keys())
+// console.log(HashMap.values())
+// console.log(HashMap.size)
+// console.log(HashMap.delete(5))  // true
+// console.log(HashMap.delete(35)) //false
+// console.log(HashMap)
 
-// let map: Map<symbol, number> = new Map();
+// let HashMap: Map<symbol, number> = new Map();
 // let appleSymbol : symbol = Symbol("apple")
-// map.set(appleSymbol, 5);
+// HashMap.set(appleSymbol, 5);
 // let bananaSymbol : symbol = Symbol("banana")
-// map.set(bananaSymbol, 25);
-// console.log(map)
-// console.log(map.get(appleSymbol));
-// console.log(map.has(bananaSymbol))
-// console.log(map.delete(bananaSymbol))
-// console.log(map)
+// HashMap.set(bananaSymbol, 25);
+// console.log(HashMap)
+// console.log(HashMap.get(appleSymbol));
+// console.log(HashMap.has(bananaSymbol))
+// console.log(HashMap.delete(bananaSymbol))
+// console.log(HashMap)
 
 
 
-// ####Collision handling via separate chaining(Nested arrays in each bucket array)#### //
+// ####Collision handling via separate chaining(Arrays in bucket array)#### //
 
 /*
 class SimpleHashMap<K, V> {
@@ -54,7 +69,7 @@ class SimpleHashMap<K, V> {
 
     constructor() {
         this.storage = new Array(this.size).fill(null).map(() => []); // [[], [], [], [], [], ...]
-        // this.storage = new Array(this.size).map(() => []); // [ <100 empty slots> ]
+        // this.storage = new Array(this.size).map(() => []); // [ <5 empty slots> ]
     }
 
     private hash(key: K): number {
@@ -72,54 +87,65 @@ class SimpleHashMap<K, V> {
         // Map to an array index
     }
 
-    set(key: K, value: V): void {
+    set(key: K, value: V): string {
         const index = this.hash(key);
         const bucket = this.storage[index];
         for (let i = 0; i < bucket.length; i++) {
             if (bucket[i][0] === key) {
                 bucket[i][1] = value; // Update value if key already exists
-                return;
+                return `[${key}, ${value}] added successfully!`
             }
         }
         bucket.push([key, value]); // Insert new key-value pair
+        return `[${key}, ${value}] added successfully!`
     }
 
-    get(key: K): V | undefined {
+    get(key: K): V | string {
         const index = this.hash(key);
         const bucket = this.storage[index];
         for (const [storedKey, storedValue] of bucket) {
-            if (storedKey === key) {
-                return storedValue;
-            }
+            if (storedKey === key) return storedValue;
         }
-        return undefined; // Key not found
+        return `Value for Key: ${key} doesn't find!`; // Key not found
     }
 
-    delete(key: K): void {
+    delete(key: K): string {
         const index = this.hash(key);
         const bucket = this.storage[index];
         for (let i = 0; i < bucket.length; i++) {
             if (bucket[i][0] === key) {
                 bucket.splice(i, 1); // Remove the key-value pair
-                return;
+                return `${key} and corresponding value deleted successfully!`;
             }
         }
+        return `${key} isn't found!`;
     }
 }
 
-// Usage
-const simple_hash_map = new SimpleHashMap<string, number>()
-simple_hash_map.set("apple", 5)
-simple_hash_map.set("banana", 25)
+
+const simple_hash_map = new SimpleHashMap<number | string, string>()
+console.log(simple_hash_map.set("samay", "raina"))
+console.log(simple_hash_map.set(25, "vikram"))
+console.log(simple_hash_map.set("naman", "5678"))
+console.log(simple_hash_map.set("chhajer", "harshi"))
 console.log(simple_hash_map)
-console.log(simple_hash_map.get("apple"))
-console.log(simple_hash_map.delete("apple"))
+console.log(simple_hash_map.get("samay"))
+console.log(simple_hash_map.get(25))
+console.log(simple_hash_map.get("25"))
+console.log(simple_hash_map.get("niraj"))
+console.log(simple_hash_map.delete("samay"))
+console.log(simple_hash_map.delete(25))
+console.log(simple_hash_map.delete("25"))
+console.log(simple_hash_map.delete("niraj"))
 console.log(simple_hash_map)
+console.log(simple_hash_map.get("samay"))
+console.log(simple_hash_map.get("25"))
 */
 
 
 
-// ####Collision handling via separate chaining(linked lists in each array bucket)#### //
+
+// ####Collision handling via separate chaining(Linked lists in array bucket)#### //
 
 /*
 class HashNode<K, V> {
