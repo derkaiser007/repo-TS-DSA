@@ -147,16 +147,16 @@ console.log(simple_hash_map.get("25"))
 
 // ####Collision handling via separate chaining(Linked lists in array bucket)#### //
 
-/*
+
 class HashNode<K, V> {
     key: K;
     value: V;
     next: HashNode<K, V> | null;
 
-    constructor(key: K, value: V, next: HashNode<K, V> | null = null){
+    constructor(key: K, value: V){
         this.key = key
         this.value = value
-        this.next = next        
+        this.next = null       
     }    
 }
 
@@ -182,53 +182,47 @@ class SimpleHashMap<K, V> {
     set(key: K, value: V): string {
         const newHashNode = new HashNode(key, value)
         const index: number = this.hash(key)
-        if(!this.storage[index]){
-            this.storage[index] = newHashNode           
-        } else {
+        if(!this.storage[index]) this.storage[index] = newHashNode;                       
+        else {
             let currentNode = this.storage[index]
-            while(currentNode.next){
-                currentNode = currentNode.next;
+            while(currentNode && currentNode.key !== key){
+                if(currentNode.next) currentNode = currentNode.next;
+                else{
+                    currentNode.next = newHashNode
+                    break
+                }
             }
-            currentNode.next = newHashNode            
+            if(currentNode && currentNode.key === key) currentNode.value = value;           
         }
-        return "Successfully Added!"
+        return `Key: ${key} & Value: ${value} added successfully!`
     }
 
     get(key: K): V | string {
-        const index = this.hash(key)
-        if(this.storage[index] && this.storage[index].key === key) return this.storage[index].value;
-        else {
-            let currentNode = this.storage[index]
-            while(currentNode && currentNode.next){
-                currentNode = currentNode.next
-                if(currentNode.key === key) return currentNode.value
-            }
-            return "Key, Value pair didn't found."
+        const index = this.hash(key)        
+        let currentNode = this.storage[index]
+        while(currentNode && currentNode.key !== key){
+            if(currentNode.next) currentNode = currentNode.next;
+            else return `${key} isn't in the table!`;
         }
+        return `Key: ${key} & Value: ${currentNode?.value}`;        
     }
 
     delete(key: K): string {
         const index = this.hash(key)
-        if(!this.storage[index]){
-            return "Empty bucket!"
-        } else if(this.storage[index].key === key) {
-            if(this.storage[index].next){
-                this.storage[index] = this.storage[index].next
-                return "Successfully deleted!"
-            } else {
-                this.storage[index] = null                
-            }
+        if(!this.storage[index]) return "Didn't find Key, Value pair!";            
+        else if(this.storage[index].key === key) {
+            if(this.storage[index].next) this.storage[index] = this.storage[index].next;
+            else this.storage[index] = null;
         } else {
             let currentNode = this.storage[index]
             while(currentNode.next && currentNode.next.key !== key){
-                currentNode = currentNode.next                
+                if(currentNode.next.next) currentNode = currentNode.next;
+                else return "Didn't find Key, Value pair!";            
             }
-            if(!currentNode.next){
-                return "Didn't find Key, Value pair."
-            }
-            currentNode.next = currentNode.next.next
+            if(currentNode.next?.next) currentNode.next = currentNode.next.next;
+            else currentNode.next = null;
         }
-        return "Successfully deleted!"
+        return `${key} and corresponding value deleted successfully!`
     }
 }
 
@@ -249,7 +243,7 @@ console.log(simple_hash_map.delete("apple"))
 console.log(simple_hash_map)
 console.log(simple_hash_map.delete("onion"))
 console.log(simple_hash_map)
-*/
+
 
 
 
