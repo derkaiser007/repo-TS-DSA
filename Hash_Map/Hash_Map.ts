@@ -147,7 +147,7 @@ console.log(simple_hash_map.get("25"))
 
 // ####Collision handling via separate chaining(Linked lists in array bucket)#### //
 
-
+/*
 class HashNode<K, V> {
     key: K;
     value: V;
@@ -243,7 +243,7 @@ console.log(simple_hash_map.delete("apple"))
 console.log(simple_hash_map)
 console.log(simple_hash_map.delete("onion"))
 console.log(simple_hash_map)
-
+*/
 
 
 
