@@ -168,6 +168,34 @@ class BinarySearchTree<V> {
         }
         return node;
     }
+
+    inOrderTraverse(node: TreeNode<V> | null = this.root, result: V[] = []): V[]{
+        if(node){
+            this.inOrderTraverse(node.left, result)   
+            result.push(node.value)    
+            this.inOrderTraverse(node.right, result)     
+        }
+        return result;
+    }
+
+    preOrderTraverse(node: TreeNode<V> | null = this.root, result: V[] = []): V[]{
+        if(node){
+            result.push(node.value)   
+            this.inOrderTraverse(node.left, result)    
+            this.inOrderTraverse(node.right, result)     
+        }
+        return result;
+    }
+
+    postOrderTraverse(node: TreeNode<V> | null = this.root, result: V[] = []): V[]{
+        if(node){ 
+            this.inOrderTraverse(node.left, result)    
+            this.inOrderTraverse(node.right, result)   
+            result.push(node.value)    
+        }
+        return result;
+
+    }
 }
 
 let bst = new BinarySearchTree<number>()
@@ -190,10 +218,9 @@ console.log(bst.successor(15))
 console.log(bst.successor(23))
 console.log(bst.successor(9))
 console.log(bst.successor(6))
-console.log(bst.deleteIteration(15))
-console.log(bst.search(15))
-console.log(bst.deleteRecursion(23))
-console.log(bst.search(23))
+console.log(bst.inOrderTraverse())
+console.log(bst.preOrderTraverse())
+console.log(bst.postOrderTraverse())
 
 
 

@@ -196,6 +196,36 @@ var BinarySearchTree = /** @class */ (function () {
         }
         return node;
     };
+    BinarySearchTree.prototype.inOrderTraverse = function (node, result) {
+        if (node === void 0) { node = this.root; }
+        if (result === void 0) { result = []; }
+        if (node) {
+            this.inOrderTraverse(node.left, result);
+            result.push(node.value);
+            this.inOrderTraverse(node.right, result);
+        }
+        return result;
+    };
+    BinarySearchTree.prototype.preOrderTraverse = function (node, result) {
+        if (node === void 0) { node = this.root; }
+        if (result === void 0) { result = []; }
+        if (node) {
+            result.push(node.value);
+            this.inOrderTraverse(node.left, result);
+            this.inOrderTraverse(node.right, result);
+        }
+        return result;
+    };
+    BinarySearchTree.prototype.postOrderTraverse = function (node, result) {
+        if (node === void 0) { node = this.root; }
+        if (result === void 0) { result = []; }
+        if (node) {
+            this.inOrderTraverse(node.left, result);
+            this.inOrderTraverse(node.right, result);
+            result.push(node.value);
+        }
+        return result;
+    };
     return BinarySearchTree;
 }());
 var bst = new BinarySearchTree();
@@ -218,7 +248,6 @@ console.log(bst.successor(15));
 console.log(bst.successor(23));
 console.log(bst.successor(9));
 console.log(bst.successor(6));
-console.log(bst.deleteIteration(15));
-console.log(bst.search(15));
-console.log(bst.deleteRecursion(23));
-console.log(bst.search(23));
+console.log(bst.inOrderTraverse());
+console.log(bst.preOrderTraverse());
+console.log(bst.postOrderTraverse());
