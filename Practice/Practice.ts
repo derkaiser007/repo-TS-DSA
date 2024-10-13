@@ -32,6 +32,16 @@ nestedArr[9].push(567)
 console.log(nestedArr)
 */
 
-
-
-
+/*
+let bst = new BinarySearchTree<number>()
+console.log(bst.insert(15))
+console.log(bst.insert(23))
+console.log(bst.insert(21))
+console.log(bst.insert(27))
+console.log(bst.insert(9))
+console.log(bst.insert(6))
+console.log(bst.insert(12))
+console.log(bst.search(9))
+console.log(bst.search(23))
+console.log(bst.search(678))
+*/
