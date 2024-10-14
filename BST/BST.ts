@@ -146,6 +146,8 @@ class BinarySearchTree<V> {
 
     deleteRecursion(value: V){
         this.root = this.deleteNode(this.root, value)
+        // This line ensures that any changes to the root (or any other part of the tree) are reflected back in the 
+        // main tree structure.
     }
     
     private deleteNode(node: TreeNode<V> | null, value: V): TreeNode<V> | null {
