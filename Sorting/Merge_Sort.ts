@@ -3,6 +3,18 @@
 
 // Time Complexity: O(n log n), Dividing the array: log n, Merging the subarrays: n
 // Auxiliary Space Complexity: O(n)
+
+function merge_sort(arr: number[], start: number = 0, end: number = arr.length-1): number[] {
+    if(start >= end) return [arr[start]];
+
+    let mid: number = Math.floor((start+end)/2)
+    let left: number[] = merge_sort(arr, start, mid)
+    let right: number[] = merge_sort(arr, mid+1, end)
+
+    return merge(left, right)
+}
+
+/*
 function merge_sort(arr: number[]): number[]{
     if(arr.length <= 1) return arr;
     
@@ -12,6 +24,7 @@ function merge_sort(arr: number[]): number[]{
     
     return merge(left, right)
 }
+*/
 
 function merge(left: number[], right: number[]): number[]{
     let i : number = 0

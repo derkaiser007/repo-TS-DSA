@@ -1,11 +1,11 @@
 // tsc Searching/Binary_Search
 // node Searching/Binary_Search
 // Time Complexity: O(log n)
-// Space Complexity: O(1)
+// Auxiliary Space Complexity: O(log n)
 function binarySearch(arr, val, start, end) {
     if (start === void 0) { start = 0; }
     if (end === void 0) { end = arr.length - 1; }
-    while (start <= end) {
+    if (start <= end) {
         var mid = Math.floor((start + end) / 2);
         console.log(start, end, mid);
         if (arr[mid] === val)

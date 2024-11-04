@@ -13,7 +13,7 @@ function radix_sort(arr: number[]): number[] {
             let index: number = Math.floor(arr[j] / 10**i) % 10
             nestedBucket[index].push(arr[j])
         }
-        arr = nestedBucket.flat()
+        arr = nestedBucket.flat() // Time Complexity: O(n)
     }
     return arr
 }

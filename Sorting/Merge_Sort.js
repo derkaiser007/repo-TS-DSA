@@ -1,13 +1,28 @@
 // tsc Sorting/Merge_Sort
 // node Sorting/Merge_Sort
-function merge_sort(arr) {
-    if (arr.length <= 1)
-        return arr;
-    var mid = Math.ceil(arr.length / 2);
-    var left = merge_sort(arr.slice(0, mid));
-    var right = merge_sort(arr.slice(mid));
+// Time Complexity: O(n log n), Dividing the array: log n, Merging the subarrays: n
+// Auxiliary Space Complexity: O(n)
+function merge_sort(arr, start, end) {
+    if (start === void 0) { start = 0; }
+    if (end === void 0) { end = arr.length - 1; }
+    if (start >= end)
+        return [arr[start]];
+    var mid = Math.floor((start + end) / 2);
+    var left = merge_sort(arr, start, mid);
+    var right = merge_sort(arr, mid + 1, end);
     return merge(left, right);
 }
+/*
+function merge_sort(arr: number[]): number[]{
+    if(arr.length <= 1) return arr;
+    
+    const mid : number = Math.ceil(arr.length / 2)
+    let left = merge_sort(arr.slice(0, mid))
+    let right = merge_sort(arr.slice(mid))
+    
+    return merge(left, right)
+}
+*/
 function merge(left, right) {
     var i = 0;
     var j = 0;

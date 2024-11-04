@@ -122,41 +122,37 @@ function shiftLetterWithWraparound(str: string, shift: number): string{
 console.log(shiftLetterWithWraparound("wxyz", 2))
 console.log(shiftLetterWithWraparound("abcd", -4))
 */
+/*
+let weights: number[] = [10,12,16]
+let values: number[] = [100,300,400]
+const items = weights
+        .map((weight, index) => ({ weight, value: values[index] }))
+        .sort((a, b) => (b.value / b.weight) - (a.value / a.weight));
+
+console.log(items)
+*/
+/*
+function binarySearch(lis: number[], num: number){
+
+    return -1
+}
+
+function lengthOfLIS(nums: number[]): number {
+    let lis: number[] = []
+    lis[0] = nums[0]
+
+    for(let i = 0; i < nums.length; i++){
+        
+    }
+    return lis.length
+};
+
+console.log(lengthOfLIS([10,9,2,5,3,7,101,18]))
+console.log(lengthOfLIS([0,1,0,3,2,3]))
+console.log(lengthOfLIS([7,7,7,7,7,7,7]))
+console.log(lengthOfLIS([5,10,1,2,3,4]))
+console.log(lengthOfLIS([1,3,6,7,9,4,10,5,6]))
+console.log(lengthOfLIS([10,11,12,13,14,15,2,3,4,5,6,7,8,19]))
+*/
 // tsc Practice/Practice
 // node Practice/Practice
-function solveNQueens(n) {
-    var result = 0;
-    var board = [];
-    // Helper function to check if the current placement is valid
-    var isSafe = function (row, col) {
-        for (var i = 0; i < row; i++) {
-            var placedCol = board[i];
-            // Check if two queens share the same column or diagonal
-            if (placedCol === col || Math.abs(placedCol - col) === Math.abs(i - row)) {
-                return false;
-            }
-        }
-        return true;
-    };
-    // Recursive backtracking function to solve the problem
-    var placeQueens = function (row) {
-        if (row === n) {
-            result++;
-            return;
-        }
-        // Try placing the queen in each column of the current row
-        for (var col = 0; col < n; col++) {
-            if (isSafe(row, col)) {
-                board[row] = col; // Place the queen
-                placeQueens(row + 1); // Recursively place the next queen
-                // No need to backtrack manually since we overwrite the board[row] in the next iteration
-            }
-        }
-    };
-    placeQueens(0); // Start placing queens from row 0
-    return result;
-}
-// Example usage:
-var n = 6;
-var solutions = solveNQueens(n);
-console.log(solutions);

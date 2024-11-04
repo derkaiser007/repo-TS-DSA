@@ -131,18 +131,40 @@ console.log(shiftLetterWithWraparound("wxyz", 2))
 console.log(shiftLetterWithWraparound("abcd", -4))
 */
 
+/*
+let weights: number[] = [10,12,16]
+let values: number[] = [100,300,400]
+const items = weights
+        .map((weight, index) => ({ weight, value: values[index] }))
+        .sort((a, b) => (b.value / b.weight) - (a.value / a.weight));
+
+console.log(items)
+*/
+
+/*
+function binarySearch(lis: number[], num: number){
+
+    return -1
+}
+
+function lengthOfLIS(nums: number[]): number {
+    let lis: number[] = []
+    lis[0] = nums[0]
+
+    for(let i = 0; i < nums.length; i++){
+        
+    }
+    return lis.length
+};
+
+console.log(lengthOfLIS([10,9,2,5,3,7,101,18])) 
+console.log(lengthOfLIS([0,1,0,3,2,3])) 
+console.log(lengthOfLIS([7,7,7,7,7,7,7])) 
+console.log(lengthOfLIS([5,10,1,2,3,4])) 
+console.log(lengthOfLIS([1,3,6,7,9,4,10,5,6]))
+console.log(lengthOfLIS([10,11,12,13,14,15,2,3,4,5,6,7,8,19])) 
+*/
+
 // tsc Practice/Practice
 // node Practice/Practice
 
-function letterCombinations(digits: string): string[] {
-    let result: string[] = []
-    
-    return result    
-};
-
-console.log(letterCombinations(""))
-console.log(letterCombinations("2"))
-console.log(letterCombinations("34"))
-console.log(letterCombinations("6789"))
-
-// 2-abc 3-def 4-ghi 5-jkl 6-mno 7-pqrs 8-tuv 9-wxyz

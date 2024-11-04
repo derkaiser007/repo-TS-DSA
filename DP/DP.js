@@ -14,13 +14,16 @@ function fibonacci(n: number, memo: Record<number, number> = {}): number {
 console.log(fibonacci(10))
 */
 // Bottom-Up (Tabulation) Approach:
-function fibonacci(n) {
-    var dp = new Array(n + 1);
-    dp[0] = 0;
-    dp[1] = 1;
-    for (var i = 2; i < n + 1; i++) {
-        dp[i] = dp[i - 1] + dp[i - 2];
+/*
+function fibonacci(n: number): number {
+    const dp = new Array(n+1)
+    dp[0] = 0
+    dp[1] = 1
+
+    for(let i = 2; i < n+1; i++){
+        dp[i] = dp[i-1] + dp[i-2]
     }
-    return dp[n];
+    return dp[n]
 }
-console.log(fibonacci(10));
+console.log(fibonacci(10))
+*/ 

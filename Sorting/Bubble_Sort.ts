@@ -23,3 +23,4 @@ function bubble_sort(arr: number[]): number[]{
 const array1: number[] = [567, 43, 89, -87, 1, -987]
 console.log(bubble_sort(array1))
 console.log(bubble_sort([123,23,45,6,145,65,27,56,89,7890]))
+console.log(bubble_sort([12, 20, 15, 13]))

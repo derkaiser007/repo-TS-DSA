@@ -3,9 +3,25 @@
 
 // Time Complexity: O(n log n)/O(n^2)
 // Auxiliary Space Complexity: O(log n)/O(n)
+
+function quick_sort(arr: number[], start: number = 0, end: number = arr.length-1): number[] {
+    let i: number = start+1
+    let j: number = start+1
+    while(i <= end){
+        if(arr[start] > arr[i]){
+            [arr[i], arr[j]] = [arr[j], arr[i]]
+            j++
+        }
+        i++
+    }
+    [arr[start], arr[j-1]] = [arr[j-1], arr[start]]
+    if(start <= j-2) quick_sort(arr, start, j-2);
+    if(j <= end) quick_sort(arr, j, end);      
+    return arr
+}
+
+/*
 function quick_sort(arr: number[], low : number = 0, high : number = arr.length-1): number[]{
-    if(arr.length <= 1) return arr;
-    
     if(low < high){
         const pivotIndex : number = partition(arr, low, high)
         quick_sort(arr, low, pivotIndex-1)
@@ -35,6 +51,7 @@ function partition(arr: number[], low : number, high : number): number{
 
     return j-1
 }
+    */
 
 const arr5: number[] = [567, 43, 89, 46578, 1, -987]
 console.log(quick_sort(arr5))
