@@ -13,6 +13,7 @@ class ListNode<T> {
 
 class SinglyLinkedList<T>{
     head: ListNode<T> | null = null;
+    size: number = 0;
 
     insertAtEnd(value: T){
         const newListNode = new ListNode(value)
@@ -24,6 +25,7 @@ class SinglyLinkedList<T>{
             }
             currentNode.next = newListNode
         } 
+        this.size++
         return `${newListNode.value} added successfully!`  
     } 
 
@@ -34,6 +36,7 @@ class SinglyLinkedList<T>{
             newListNode.next = this.head
             this.head = newListNode
         }
+        this.size++
         return `${newListNode.value} added successfully!` 
     }
 
@@ -51,6 +54,7 @@ class SinglyLinkedList<T>{
             newListNode.next = current.next
             current.next = newListNode
         }
+        this.size++
         return `${newListNode.value} added successfully!` 
     } 
     
@@ -66,6 +70,7 @@ class SinglyLinkedList<T>{
             newListNode.next = currentNode.next
             currentNode.next = newListNode
         }
+        this.size++
         return `${newListNode.value} added successfully!` 
     }
 
@@ -96,6 +101,7 @@ class SinglyLinkedList<T>{
             if(!currentNode.next?.next) currentNode.next = null;
             else currentNode.next = currentNode.next.next
         }
+        this.size--
         return `${value} is deleted successfully!`;
     }
     
@@ -115,17 +121,7 @@ class SinglyLinkedList<T>{
     }
 
     sizeOfList(){
-        let size: number = 0
-        if(!this.head) return `Size: 0`
-        else {
-            let currentNode = this.head
-            while(currentNode){
-                size++
-                if(currentNode.next) currentNode = currentNode.next;
-                else break;
-            }
-        }
-        return `Size: ${size}`
+        return `Size: ${this.size}`
     }
 }
 

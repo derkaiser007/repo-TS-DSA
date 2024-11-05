@@ -156,3 +156,179 @@ console.log(lengthOfLIS([10,11,12,13,14,15,2,3,4,5,6,7,8,19]))
 */
 // tsc Practice/Practice
 // node Practice/Practice
+var ListNode = /** @class */ (function () {
+    function ListNode(val) {
+        this.prev = null;
+        this.next = null;
+        this.value = val;
+    }
+    return ListNode;
+}());
+var DoublyLinkedList = /** @class */ (function () {
+    function DoublyLinkedList() {
+        this.head = null;
+        this.size = 0;
+    }
+    DoublyLinkedList.prototype.insertAtEnd = function (val) {
+        var node = new ListNode(val);
+        if (!this.head)
+            this.head = node;
+        else {
+            var current = this.head;
+            while (current.next)
+                current = current.next;
+            current.next = node;
+            node.prev = current;
+        }
+        this.size++;
+        return "".concat(val, " added successfully!");
+    };
+    DoublyLinkedList.prototype.insertAtHead = function (val) {
+        var node = new ListNode(val);
+        if (!this.head)
+            this.head = node;
+        else {
+            node.next = this.head;
+            this.head.prev = node;
+            this.head = node;
+        }
+        this.size++;
+        return "".concat(val, " added successfully!");
+    };
+    DoublyLinkedList.prototype.insertBefore = function (val, reference) {
+        var node = new ListNode(val);
+        if (!this.head)
+            return "".concat(reference, " isn't in the list!");
+        else if (this.head.value === reference)
+            return this.insertAtHead(val);
+        else {
+            var current = this.head;
+            while (current.next && current.next.value !== reference)
+                current = current.next;
+            if (!current.next)
+                return "".concat(reference, " isn't in the list!");
+            else {
+                node.next = current.next;
+                current.next.prev = node;
+                current.next = node;
+                node.prev = current;
+            }
+        }
+        this.size++;
+        return "".concat(val, " added successfully!");
+    };
+    DoublyLinkedList.prototype.insertAfter = function (val, reference) {
+        var node = new ListNode(val);
+        if (!this.head)
+            return "".concat(reference, " isn't in the list!");
+        else {
+            var current = this.head;
+            while (current.value !== reference && current.next)
+                current = current.next;
+            if (current.value !== reference && !current.next)
+                return "".concat(reference, " isn't in the list!");
+            else if (current.value === reference && !current.next) {
+                current.next = node;
+                node.prev = current;
+            }
+            else if (current.value === reference && current.next) {
+                node.next = current.next;
+                current.next.prev = node;
+                current.next = node;
+                node.prev = current;
+            }
+        }
+        this.size++;
+        return "".concat(val, " added successfully!");
+    };
+    DoublyLinkedList.prototype.searchingNode = function (val) {
+        if (!this.head)
+            return "".concat(val, " isn't in the list!");
+        else {
+            var current = this.head;
+            while (current.value !== val && current.next)
+                current = current.next;
+            if (current.value !== val && !current.next)
+                return "".concat(val, " isn't in the list!");
+        }
+        return "".concat(val, " found successfully!");
+    };
+    DoublyLinkedList.prototype.deleteNode = function (val) {
+        var _a, _b, _c, _d, _e, _f, _g, _h;
+        if (!this.head)
+            return "".concat(val, " isn't in the list!");
+        else if (this.head.value === val) {
+            if (this.head.next) {
+                this.head = this.head.next;
+                this.head.prev = null;
+            }
+            else
+                this.head = null;
+        }
+        else {
+            var current = this.head;
+            while (((_a = current.next) === null || _a === void 0 ? void 0 : _a.value) !== val && ((_b = current.next) === null || _b === void 0 ? void 0 : _b.next))
+                current = current.next;
+            if (((_c = current.next) === null || _c === void 0 ? void 0 : _c.value) !== val && !((_d = current.next) === null || _d === void 0 ? void 0 : _d.next))
+                return "".concat(val, " isn't in the list!");
+            else if (((_e = current.next) === null || _e === void 0 ? void 0 : _e.value) === val && !((_f = current.next) === null || _f === void 0 ? void 0 : _f.next))
+                current.next = null;
+            else if (((_g = current.next) === null || _g === void 0 ? void 0 : _g.value) === val && ((_h = current.next) === null || _h === void 0 ? void 0 : _h.next)) {
+                current.next = current.next.next;
+                current.next.prev = current;
+            }
+        }
+        this.size--;
+        return "".concat(val, " deleted successfully!");
+    };
+    DoublyLinkedList.prototype.traverseList = function () {
+        if (!this.head)
+            return null;
+        else {
+            var current = this.head;
+            while (current) {
+                process.stdout.write("".concat(current.value, " <-> "));
+                if (current.next)
+                    current = current.next;
+                else {
+                    process.stdout.write("null\n");
+                    break;
+                }
+            }
+        }
+    };
+    DoublyLinkedList.prototype.sizeOfList = function () {
+        return this.size;
+    };
+    return DoublyLinkedList;
+}());
+var list = new DoublyLinkedList();
+console.log(list.traverseList());
+console.log(list.sizeOfList());
+console.log(list.insertAtEnd("niraj"));
+console.log(list.insertAtEnd(true));
+console.log(list.insertAtEnd(123));
+console.log(list.insertAtEnd("samar"));
+list.traverseList();
+console.log(list.insertAtHead(456));
+console.log(list.insertAtHead(false));
+list.traverseList();
+console.log(list.insertAfter("samay", 123));
+console.log(list.insertAfter("harshi", "samay"));
+console.log(list.insertAfter(786, "samar"));
+list.traverseList();
+console.log(list.insertBefore(6789, "harshi"));
+console.log(list.insertBefore(1234, 6789));
+console.log(list.insertBefore("wxyz", false));
+list.traverseList();
+console.log(list.searchingNode("harshi"));
+console.log(list.searchingNode("wxyz"));
+console.log(list.searchingNode(786));
+console.log(list.deleteNode("samay"));
+console.log(list.deleteNode(786));
+console.log(list.deleteNode("wxyz"));
+list.traverseList();
+console.log(list.deleteNode("samar"));
+console.log(list.insertAtEnd("neer"));
+list.traverseList();
+console.log(list.sizeOfList());

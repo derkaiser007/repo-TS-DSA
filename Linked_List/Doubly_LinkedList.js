@@ -13,6 +13,7 @@ var ListNode = /** @class */ (function () {
 var DoublyLinkedList = /** @class */ (function () {
     function DoublyLinkedList() {
         this.head = null;
+        this.size = 0;
     }
     DoublyLinkedList.prototype.insertAtEnd = function (value) {
         var newListNode = new ListNode(value);
@@ -26,6 +27,7 @@ var DoublyLinkedList = /** @class */ (function () {
             currentNode.next = newListNode;
             newListNode.prev = currentNode;
         }
+        this.size++;
         return "".concat(newListNode.value, " added successfully!");
     };
     DoublyLinkedList.prototype.insertAtHead = function (value) {
@@ -37,6 +39,7 @@ var DoublyLinkedList = /** @class */ (function () {
             newListNode.next = this.head;
             this.head = newListNode;
         }
+        this.size++;
         return "".concat(newListNode.value, " added successfully!");
     };
     DoublyLinkedList.prototype.insertAtNext = function (value, referenceValue) {
@@ -57,6 +60,7 @@ var DoublyLinkedList = /** @class */ (function () {
                 newListNode.next.prev = newListNode;
             currentNode.next = newListNode;
         }
+        this.size++;
         return "".concat(newListNode.value, " added successfully!");
     };
     DoublyLinkedList.prototype.insertAtPrev = function (value, referenceValue) {
@@ -65,7 +69,7 @@ var DoublyLinkedList = /** @class */ (function () {
         if (!this.head)
             return "Empty List!";
         else if (this.head.value === referenceValue)
-            return this.insertAtHead(newListNode.value);
+            return this.insertAtHead(value);
         else {
             var currentNode = this.head;
             while (((_a = currentNode.next) === null || _a === void 0 ? void 0 : _a.value) !== referenceValue) {
@@ -79,6 +83,7 @@ var DoublyLinkedList = /** @class */ (function () {
             currentNode.next = newListNode;
             newListNode.prev = currentNode;
         }
+        this.size++;
         return "".concat(newListNode.value, " added successfully!");
     };
     DoublyLinkedList.prototype.searchingNode = function (value) {
@@ -119,6 +124,7 @@ var DoublyLinkedList = /** @class */ (function () {
             if ((_b = currentNode.next) === null || _b === void 0 ? void 0 : _b.prev)
                 currentNode.next.prev = currentNode;
         }
+        this.size--;
         return "".concat(value, " deleted successfully!");
     };
     DoublyLinkedList.prototype.traverseList = function () {
@@ -137,19 +143,7 @@ var DoublyLinkedList = /** @class */ (function () {
         }
     };
     DoublyLinkedList.prototype.sizeOfList = function () {
-        var size = 0;
-        if (!this.head)
-            return "Size: 0";
-        else {
-            var currentNode = this.head;
-            while (currentNode) {
-                size++;
-                if (currentNode.next)
-                    currentNode = currentNode.next;
-                else
-                    return "Size: ".concat(size);
-            }
-        }
+        return "Size: ".concat(this.size);
     };
     return DoublyLinkedList;
 }());

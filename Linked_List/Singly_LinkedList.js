@@ -11,6 +11,7 @@ var ListNode = /** @class */ (function () {
 var SinglyLinkedList = /** @class */ (function () {
     function SinglyLinkedList() {
         this.head = null;
+        this.size = 0;
     }
     SinglyLinkedList.prototype.insertAtEnd = function (value) {
         var newListNode = new ListNode(value);
@@ -23,6 +24,7 @@ var SinglyLinkedList = /** @class */ (function () {
             }
             currentNode.next = newListNode;
         }
+        this.size++;
         return "".concat(newListNode.value, " added successfully!");
     };
     SinglyLinkedList.prototype.insertAtHead = function (value) {
@@ -33,6 +35,7 @@ var SinglyLinkedList = /** @class */ (function () {
             newListNode.next = this.head;
             this.head = newListNode;
         }
+        this.size++;
         return "".concat(newListNode.value, " added successfully!");
     };
     SinglyLinkedList.prototype.insertBefore = function (value, referenceValue) {
@@ -52,6 +55,7 @@ var SinglyLinkedList = /** @class */ (function () {
             newListNode.next = current.next;
             current.next = newListNode;
         }
+        this.size++;
         return "".concat(newListNode.value, " added successfully!");
     };
     SinglyLinkedList.prototype.insertAfter = function (value, referenceValue) {
@@ -69,6 +73,7 @@ var SinglyLinkedList = /** @class */ (function () {
             newListNode.next = currentNode.next;
             currentNode.next = newListNode;
         }
+        this.size++;
         return "".concat(newListNode.value, " added successfully!");
     };
     SinglyLinkedList.prototype.searchingNode = function (value) {
@@ -89,8 +94,12 @@ var SinglyLinkedList = /** @class */ (function () {
         var _a, _b, _c;
         if (!this.head)
             return "Empty List!";
-        else if (this.head.value === value)
-            this.head = this.head.next;
+        else if (this.head.value === value) {
+            if (this.head.next)
+                this.head = this.head.next;
+            else
+                this.head = null;
+        }
         else {
             var currentNode = this.head;
             while (((_a = currentNode.next) === null || _a === void 0 ? void 0 : _a.value) !== value) {
@@ -104,6 +113,7 @@ var SinglyLinkedList = /** @class */ (function () {
             else
                 currentNode.next = currentNode.next.next;
         }
+        this.size--;
         return "".concat(value, " is deleted successfully!");
     };
     SinglyLinkedList.prototype.traverseList = function () {
@@ -123,20 +133,7 @@ var SinglyLinkedList = /** @class */ (function () {
         }
     };
     SinglyLinkedList.prototype.sizeOfList = function () {
-        var size = 0;
-        if (!this.head)
-            return "Size: 0";
-        else {
-            var currentNode = this.head;
-            while (currentNode) {
-                size++;
-                if (currentNode.next)
-                    currentNode = currentNode.next;
-                else
-                    break;
-            }
-        }
-        return "Size: ".concat(size);
+        return "Size: ".concat(this.size);
     };
     return SinglyLinkedList;
 }());

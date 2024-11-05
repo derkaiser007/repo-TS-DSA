@@ -168,3 +168,169 @@ console.log(lengthOfLIS([10,11,12,13,14,15,2,3,4,5,6,7,8,19]))
 // tsc Practice/Practice
 // node Practice/Practice
 
+class ListNode<T>{
+    value: T
+    prev: ListNode<T> | null = null
+    next: ListNode<T> | null = null
+
+    constructor(val: T){
+        this.value = val
+    }
+}
+
+class DoublyLinkedList<T>{
+    head: ListNode<T> | null = null
+    size: number = 0
+
+    insertAtEnd(val: T): string {
+        const node = new ListNode(val)
+        if(!this.head) this.head = node;
+        else{
+            let current = this.head
+            while(current.next) current = current.next;
+            current.next = node
+            node.prev = current
+        }
+        this.size++
+        return `${val} added successfully!`
+    }
+
+    insertAtHead(val: T): string{
+        const node = new ListNode(val)
+        if(!this.head) this.head = node;
+        else{
+            node.next = this.head
+            this.head.prev = node
+            this.head = node
+        }
+        this.size++        
+        return `${val} added successfully!`
+    }
+
+    insertBefore(val: T, reference: T): string {
+        const node = new ListNode(val)
+        if(!this.head) return `${reference} isn't in the list!`;
+        else if(this.head.value === reference) return this.insertAtHead(val);
+        else{
+            let current = this.head
+            while(current.next && current.next.value !== reference) current = current.next;
+            if(!current.next) return `${reference} isn't in the list!`;
+            else{
+                node.next = current.next
+                current.next.prev = node
+                current.next = node
+                node.prev = current
+            }
+        }     
+        this.size++    
+        return `${val} added successfully!`
+    }
+
+    insertAfter(val: T, reference: T): string {
+        const node = new ListNode(val)
+        if(!this.head) return `${reference} isn't in the list!`;
+        else{
+            let current = this.head
+            while(current.value !== reference && current.next) current = current.next;
+            if(current.value !== reference && !current.next) return `${reference} isn't in the list!`;
+            else if(current.value === reference && !current.next){
+                current.next = node
+                node.prev = current
+            }
+            else if(current.value === reference && current.next){
+                node.next = current.next
+                current.next.prev = node
+                current.next = node
+                node.prev = current
+            }
+        }      
+        this.size++   
+        return `${val} added successfully!`
+    }
+
+    searchingNode(val: T): string {
+        if(!this.head) return `${val} isn't in the list!`;
+        else{
+            let current = this.head
+            while(current.value !== val && current.next) current = current.next;
+            if(current.value !== val && !current.next) return `${val} isn't in the list!`;
+        }        
+        return `${val} found successfully!`
+    }
+
+    deleteNode(val: T): string {
+        if(!this.head) return `${val} isn't in the list!`;
+        else if(this.head.value === val){
+            if(this.head.next){
+                this.head = this.head.next
+                this.head.prev = null
+            }
+            else this.head = null;
+        }
+        else{
+            let current = this.head
+            while(current.next?.value !== val && current.next?.next) current = current.next;
+            if(current.next?.value !== val && !current.next?.next) return `${val} isn't in the list!`;
+            else if(current.next?.value === val && !current.next?.next) current.next = null;
+            else if(current.next?.value === val && current.next?.next){
+                current.next = current.next.next
+                current.next.prev = current
+            } 
+        }
+        this.size--
+        return `${val} deleted successfully!`
+    }
+
+    traverseList(){
+        if(!this.head) return null;
+        else{
+            let current = this.head
+            while(current){
+                process.stdout.write(`${current.value} <-> `)
+                if(current.next) current = current.next;
+                else{
+                    process.stdout.write(`null\n`)
+                    break
+                }
+            }
+        }        
+    }
+
+    sizeOfList(){
+        return this.size;
+    }
+}
+
+let list = new DoublyLinkedList<number | string | boolean>()
+console.log(list.traverseList())
+console.log(list.sizeOfList())
+console.log(list.insertAtEnd("niraj"))
+console.log(list.insertAtEnd(true))
+console.log(list.insertAtEnd(123))
+console.log(list.insertAtEnd("samar"))
+list.traverseList()
+console.log(list.insertAtHead(456))
+console.log(list.insertAtHead(false))
+list.traverseList()
+console.log(list.insertAfter("samay", 123))
+console.log(list.insertAfter("harshi", "samay"))
+console.log(list.insertAfter(786, "samar"))
+list.traverseList()
+console.log(list.insertBefore(6789, "harshi"))
+console.log(list.insertBefore(1234, 6789))
+console.log(list.insertBefore("wxyz", false))
+list.traverseList()
+console.log(list.searchingNode("harshi"))
+console.log(list.searchingNode("wxyz"))
+console.log(list.searchingNode(786))
+console.log(list.deleteNode("samay"))
+console.log(list.deleteNode(786))
+console.log(list.deleteNode("wxyz"))
+list.traverseList()
+console.log(list.deleteNode("samar"))
+console.log(list.insertAtEnd("neer"))
+list.traverseList()
+console.log(list.sizeOfList())
+
+
+

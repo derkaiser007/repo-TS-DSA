@@ -15,6 +15,7 @@ class ListNode<T> {
 
 class DoublyLinkedList<T>{
     head: ListNode<T> | null = null;
+    size: number = 0
 
     insertAtEnd(value: T){
         const newListNode = new ListNode(value)
@@ -27,6 +28,7 @@ class DoublyLinkedList<T>{
             currentNode.next = newListNode
             newListNode.prev = currentNode        
         }
+        this.size++
         return `${newListNode.value} added successfully!`
     }
 
@@ -38,6 +40,7 @@ class DoublyLinkedList<T>{
             newListNode.next = this.head
             this.head = newListNode
         }
+        this.size++
         return `${newListNode.value} added successfully!`
     }
 
@@ -55,13 +58,14 @@ class DoublyLinkedList<T>{
             if(newListNode.next) newListNode.next.prev = newListNode;
             currentNode.next = newListNode             
         }
+        this.size++
         return `${newListNode.value} added successfully!`;
     }
 
     insertAtPrev(value: T, referenceValue: T){
         const newListNode = new ListNode(value)
         if(!this.head) return `Empty List!`;
-        else if(this.head.value === referenceValue) return this.insertAtHead(newListNode.value);
+        else if(this.head.value === referenceValue) return this.insertAtHead(value);
         else {
             let currentNode = this.head
             while(currentNode.next?.value !== referenceValue){
@@ -73,6 +77,7 @@ class DoublyLinkedList<T>{
             currentNode.next = newListNode
             newListNode.prev = currentNode
         }
+        this.size++
         return `${newListNode.value} added successfully!`
     }
 
@@ -106,6 +111,7 @@ class DoublyLinkedList<T>{
             currentNode.next = currentNode.next.next
             if(currentNode.next?.prev) currentNode.next.prev = currentNode;   
         }
+        this.size--
         return `${value} deleted successfully!`
     }
 
@@ -123,16 +129,7 @@ class DoublyLinkedList<T>{
     }
 
     sizeOfList(){
-        let size: number = 0
-        if(!this.head) return `Size: 0`
-        else {
-            let currentNode = this.head
-            while(currentNode){
-                size++
-                if(currentNode.next) currentNode = currentNode.next;
-                else return `Size: ${size}`;
-            }
-        }   
+        return `Size: ${this.size}`;  
     }
 
 }
