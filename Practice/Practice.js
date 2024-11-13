@@ -154,181 +154,308 @@ console.log(lengthOfLIS([5,10,1,2,3,4]))
 console.log(lengthOfLIS([1,3,6,7,9,4,10,5,6]))
 console.log(lengthOfLIS([10,11,12,13,14,15,2,3,4,5,6,7,8,19]))
 */
+/*
+class ListNode {
+    val: number
+    next: ListNode | null
+    constructor(val?: number, next?: ListNode | null) {
+        this.val = (val === undefined ? 0 : val)
+        this.next = (next === undefined ? null : next)
+    }
+}
+
+function deleteDuplicates(head: ListNode | null): ListNode | null {
+    let result = new ListNode(0)
+    let list: ListNode = result
+    let count: number = 0
+    let current: ListNode | null = head
+    while(current?.next){
+        if(current.val === current.next.val) count++;
+        else if(current.val !== current.next.val && count !== 0) count = 0;
+        else if(current.val !== current.next.val && count === 0){
+            list.next = current
+            list = list.next
+        }
+        current = current.next;
+    }
+    if(count === 0 && current) list.next = current;
+    return result.next;
+};
+// 1 2 3 3 4 4 5
+// 1 2 2
+*/
 // tsc Practice/Practice
 // node Practice/Practice
-var ListNode = /** @class */ (function () {
-    function ListNode(val) {
-        this.prev = null;
-        this.next = null;
+var TreeNode = /** @class */ (function () {
+    function TreeNode(val) {
+        this.left = null;
+        this.right = null;
+        this.freq = 1;
         this.value = val;
     }
-    return ListNode;
+    return TreeNode;
 }());
-var DoublyLinkedList = /** @class */ (function () {
-    function DoublyLinkedList() {
-        this.head = null;
-        this.size = 0;
+var BST = /** @class */ (function () {
+    function BST() {
+        this.root = null;
     }
-    DoublyLinkedList.prototype.insertAtEnd = function (val) {
-        var node = new ListNode(val);
-        if (!this.head)
-            this.head = node;
+    BST.prototype.insert = function (val) {
+        var node = new TreeNode(val);
+        if (!this.root)
+            this.root = node;
         else {
-            var current = this.head;
-            while (current.next)
-                current = current.next;
-            current.next = node;
-            node.prev = current;
-        }
-        this.size++;
-        return "".concat(val, " added successfully!");
-    };
-    DoublyLinkedList.prototype.insertAtHead = function (val) {
-        var node = new ListNode(val);
-        if (!this.head)
-            this.head = node;
-        else {
-            node.next = this.head;
-            this.head.prev = node;
-            this.head = node;
-        }
-        this.size++;
-        return "".concat(val, " added successfully!");
-    };
-    DoublyLinkedList.prototype.insertBefore = function (val, reference) {
-        var node = new ListNode(val);
-        if (!this.head)
-            return "".concat(reference, " isn't in the list!");
-        else if (this.head.value === reference)
-            return this.insertAtHead(val);
-        else {
-            var current = this.head;
-            while (current.next && current.next.value !== reference)
-                current = current.next;
-            if (!current.next)
-                return "".concat(reference, " isn't in the list!");
-            else {
-                node.next = current.next;
-                current.next.prev = node;
-                current.next = node;
-                node.prev = current;
-            }
-        }
-        this.size++;
-        return "".concat(val, " added successfully!");
-    };
-    DoublyLinkedList.prototype.insertAfter = function (val, reference) {
-        var node = new ListNode(val);
-        if (!this.head)
-            return "".concat(reference, " isn't in the list!");
-        else {
-            var current = this.head;
-            while (current.value !== reference && current.next)
-                current = current.next;
-            if (current.value !== reference && !current.next)
-                return "".concat(reference, " isn't in the list!");
-            else if (current.value === reference && !current.next) {
-                current.next = node;
-                node.prev = current;
-            }
-            else if (current.value === reference && current.next) {
-                node.next = current.next;
-                current.next.prev = node;
-                current.next = node;
-                node.prev = current;
-            }
-        }
-        this.size++;
-        return "".concat(val, " added successfully!");
-    };
-    DoublyLinkedList.prototype.searchingNode = function (val) {
-        if (!this.head)
-            return "".concat(val, " isn't in the list!");
-        else {
-            var current = this.head;
-            while (current.value !== val && current.next)
-                current = current.next;
-            if (current.value !== val && !current.next)
-                return "".concat(val, " isn't in the list!");
-        }
-        return "".concat(val, " found successfully!");
-    };
-    DoublyLinkedList.prototype.deleteNode = function (val) {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
-        if (!this.head)
-            return "".concat(val, " isn't in the list!");
-        else if (this.head.value === val) {
-            if (this.head.next) {
-                this.head = this.head.next;
-                this.head.prev = null;
-            }
-            else
-                this.head = null;
-        }
-        else {
-            var current = this.head;
-            while (((_a = current.next) === null || _a === void 0 ? void 0 : _a.value) !== val && ((_b = current.next) === null || _b === void 0 ? void 0 : _b.next))
-                current = current.next;
-            if (((_c = current.next) === null || _c === void 0 ? void 0 : _c.value) !== val && !((_d = current.next) === null || _d === void 0 ? void 0 : _d.next))
-                return "".concat(val, " isn't in the list!");
-            else if (((_e = current.next) === null || _e === void 0 ? void 0 : _e.value) === val && !((_f = current.next) === null || _f === void 0 ? void 0 : _f.next))
-                current.next = null;
-            else if (((_g = current.next) === null || _g === void 0 ? void 0 : _g.value) === val && ((_h = current.next) === null || _h === void 0 ? void 0 : _h.next)) {
-                current.next = current.next.next;
-                current.next.prev = current;
-            }
-        }
-        this.size--;
-        return "".concat(val, " deleted successfully!");
-    };
-    DoublyLinkedList.prototype.traverseList = function () {
-        if (!this.head)
-            return null;
-        else {
-            var current = this.head;
+            var current = this.root;
             while (current) {
-                process.stdout.write("".concat(current.value, " <-> "));
-                if (current.next)
-                    current = current.next;
+                if (current.value < val) {
+                    if (current.right)
+                        current = current.right;
+                    else {
+                        current.right = node;
+                        break;
+                    }
+                }
+                else if (current.value > val) {
+                    if (current.left)
+                        current = current.left;
+                    else {
+                        current.left = node;
+                        break;
+                    }
+                }
                 else {
-                    process.stdout.write("null\n");
+                    current.freq++;
                     break;
                 }
             }
         }
+        return "".concat(val, " added successfully!");
     };
-    DoublyLinkedList.prototype.sizeOfList = function () {
-        return this.size;
+    BST.prototype.search = function (val) {
+        if (!this.root)
+            return "Empty BST!";
+        else {
+            var current = this.root;
+            while (current) {
+                if (current.value < val) {
+                    if (current.right)
+                        current = current.right;
+                    else
+                        return "".concat(val, " isn't in BST!");
+                }
+                else if (current.value > val) {
+                    if (current.left)
+                        current = current.left;
+                    else
+                        return "".concat(val, " isn't in BST!");
+                }
+                else
+                    return "".concat(val, " found successfully in BST!");
+            }
+        }
+        return "";
     };
-    return DoublyLinkedList;
+    BST.prototype.predecessor = function (val) {
+        if (!this.root)
+            return null;
+        else {
+            var current = this.root;
+            var tempPre = null;
+            while (current.value !== val) {
+                if (current.value < val && current.right) {
+                    tempPre = current;
+                    current = current.right;
+                }
+                else if (current.value > val && current.left)
+                    current = current.left;
+                else
+                    return null;
+            }
+            if (current.left)
+                current = current.left;
+            else
+                return tempPre ? tempPre : null;
+            while (current.right)
+                current = current.right;
+            return current;
+        }
+    };
+    BST.prototype.successor = function (val) {
+        if (!this.root)
+            return null;
+        else {
+            var current = this.root;
+            var tempSucc = null;
+            while (current.value !== val) {
+                if (current.value < val && current.right)
+                    current = current.right;
+                else if (current.value > val && current.left) {
+                    tempSucc = current;
+                    current = current.left;
+                }
+                else
+                    return null;
+            }
+            if (current.right)
+                current = current.right;
+            else
+                return tempSucc ? tempSucc : null;
+            while (current.left)
+                current = current.left;
+            return current;
+        }
+    };
+    BST.prototype.deleteIteration = function (val) {
+        var current = this.root;
+        var parent = null;
+        if (!this.root)
+            return "Empty BST!";
+        while (current.value !== val) {
+            parent = current;
+            if (current.value > val && current.left)
+                current = current.left;
+            else if (current.value < val && current.right)
+                current = current.right;
+            else
+                return "".concat(val, " isn't in BST!");
+        }
+        if (current.freq > 1)
+            current.freq--;
+        else if (!current.left && !current.right) {
+            if (current === this.root)
+                this.root = null;
+            else
+                parent.left === current ? parent.left = null : parent.right = null;
+        }
+        else if (current.left && !current.right)
+            current = current.left;
+        else if (!current.left && current.right)
+            current = current.right;
+        else {
+            var succ = null;
+            var presucc = null;
+            presucc = current;
+            succ = current.right;
+            while (succ.left) {
+                presucc = succ;
+                succ = succ.left;
+            }
+            current.value = succ.value;
+            current.freq = succ.freq;
+            if (presucc.left === succ)
+                presucc.left = succ.right;
+            else if (presucc.right === succ)
+                presucc.right = succ.right;
+        }
+        return "".concat(val, " deleted successfully!");
+    };
+    BST.prototype.deleteRecursion = function (val) {
+        this.root = this.deleteNodeRecursion(this.root, val);
+        return "".concat(val, " deleted successfully!");
+    };
+    BST.prototype.deleteNodeRecursion = function (node, val) {
+        if (!node)
+            return null;
+        else if (node.value > val)
+            node.left = this.deleteNodeRecursion(node.left, val);
+        else if (node.value < val)
+            node.right = this.deleteNodeRecursion(node.right, val);
+        else {
+            if (node.freq > 1)
+                node.freq--;
+            else if (!node.left && !node.right)
+                return null;
+            else if (node.left && !node.right)
+                return node.left;
+            else if (!node.left && node.right)
+                return node.right;
+            else {
+                var succ = this.successor(node.value);
+                node.value = succ.value;
+                node.freq = succ.freq;
+                node.right = this.deleteNodeRecursion(node.right, succ.value);
+            }
+        }
+        return node;
+    };
+    BST.prototype.bfsTraverse = function () {
+        if (!this.root)
+            return [];
+        var temp = [this.root];
+        var result = [];
+        while (temp.length !== 0) {
+            var node = temp.shift();
+            result.push({ value: node.value, freq: node.freq });
+            if (node === null || node === void 0 ? void 0 : node.left)
+                temp.push(node === null || node === void 0 ? void 0 : node.left);
+            if (node === null || node === void 0 ? void 0 : node.right)
+                temp.push(node === null || node === void 0 ? void 0 : node.right);
+        }
+        return result;
+    };
+    BST.prototype.preOrderTraverse = function (node, result) {
+        if (node === void 0) { node = this.root; }
+        if (result === void 0) { result = []; }
+        if (node) {
+            result.push({ value: node.value, freq: node.freq });
+            this.preOrderTraverse(node.left, result);
+            this.preOrderTraverse(node.right, result);
+        }
+        return result;
+    };
+    BST.prototype.inOrderTraverse = function (node, result) {
+        if (node === void 0) { node = this.root; }
+        if (result === void 0) { result = []; }
+        if (node) {
+            this.inOrderTraverse(node.left, result);
+            result.push({ value: node.value, freq: node.freq });
+            this.inOrderTraverse(node.right, result);
+        }
+        return result;
+    };
+    BST.prototype.postOrderTraverse = function (node, result) {
+        if (node === void 0) { node = this.root; }
+        if (result === void 0) { result = []; }
+        if (node) {
+            this.postOrderTraverse(node.left, result);
+            this.postOrderTraverse(node.right, result);
+            result.push({ value: node.value, freq: node.freq });
+        }
+        return result;
+    };
+    return BST;
 }());
-var list = new DoublyLinkedList();
-console.log(list.traverseList());
-console.log(list.sizeOfList());
-console.log(list.insertAtEnd("niraj"));
-console.log(list.insertAtEnd(true));
-console.log(list.insertAtEnd(123));
-console.log(list.insertAtEnd("samar"));
-list.traverseList();
-console.log(list.insertAtHead(456));
-console.log(list.insertAtHead(false));
-list.traverseList();
-console.log(list.insertAfter("samay", 123));
-console.log(list.insertAfter("harshi", "samay"));
-console.log(list.insertAfter(786, "samar"));
-list.traverseList();
-console.log(list.insertBefore(6789, "harshi"));
-console.log(list.insertBefore(1234, 6789));
-console.log(list.insertBefore("wxyz", false));
-list.traverseList();
-console.log(list.searchingNode("harshi"));
-console.log(list.searchingNode("wxyz"));
-console.log(list.searchingNode(786));
-console.log(list.deleteNode("samay"));
-console.log(list.deleteNode(786));
-console.log(list.deleteNode("wxyz"));
-list.traverseList();
-console.log(list.deleteNode("samar"));
-console.log(list.insertAtEnd("neer"));
-list.traverseList();
-console.log(list.sizeOfList());
+var bst = new BST();
+console.log(bst.insert(15));
+console.log(bst.insert(23));
+console.log(bst.insert(21));
+console.log(bst.insert(27));
+console.log(bst.insert(9));
+console.log(bst.insert(6));
+console.log(bst.insert(12));
+console.log(bst);
+// console.log(bst.inOrderTraverse())
+// console.log(bst.preOrderTraverse())
+// console.log(bst.postOrderTraverse())
+console.log(bst.insert(9));
+// console.log(bst.inOrderTraverse())
+// console.log(bst.search(9))
+// console.log(bst.search(23))
+// console.log(bst.search(678))
+// console.log(bst.predecessor(15))
+// console.log(bst.predecessor(23))
+// console.log(bst.predecessor(21))
+// console.log(bst.predecessor(6))
+// console.log(bst.successor(15))
+// console.log(bst.successor(23))
+// console.log(bst.successor(12))
+// console.log(bst.successor(27))
+// console.log(bst.deleteRecursion(9))
+// console.log(bst.inOrderTraverse())
+// console.log(bst.deleteRecursion(15))
+// console.log(bst.inOrderTraverse())
+console.log(bst.deleteIteration(9));
+console.log(bst.inOrderTraverse());
+console.log(bst.deleteIteration(15));
+console.log(bst.inOrderTraverse());
+// tsc Practice/Practice
+// node Practice/Practice

@@ -165,172 +165,283 @@ console.log(lengthOfLIS([1,3,6,7,9,4,10,5,6]))
 console.log(lengthOfLIS([10,11,12,13,14,15,2,3,4,5,6,7,8,19])) 
 */
 
+/*
+class ListNode {
+    val: number
+    next: ListNode | null
+    constructor(val?: number, next?: ListNode | null) {
+        this.val = (val === undefined ? 0 : val)
+        this.next = (next === undefined ? null : next)
+    }
+}
+
+function deleteDuplicates(head: ListNode | null): ListNode | null {
+    let result = new ListNode(0)
+    let list: ListNode = result
+    let count: number = 0
+    let current: ListNode | null = head
+    while(current?.next){
+        if(current.val === current.next.val) count++;
+        else if(current.val !== current.next.val && count !== 0) count = 0;
+        else if(current.val !== current.next.val && count === 0){
+            list.next = current
+            list = list.next
+        }
+        current = current.next;
+    }
+    if(count === 0 && current) list.next = current;
+    return result.next;
+};
+// 1 2 3 3 4 4 5
+// 1 2 2
+*/
+
 // tsc Practice/Practice
 // node Practice/Practice
 
-class ListNode<T>{
+class TreeNode<T>{
     value: T
-    prev: ListNode<T> | null = null
-    next: ListNode<T> | null = null
+    left: TreeNode<T> | null = null
+    right: TreeNode<T> | null = null
+    freq: number = 1
 
     constructor(val: T){
         this.value = val
     }
 }
 
-class DoublyLinkedList<T>{
-    head: ListNode<T> | null = null
-    size: number = 0
+class BST<T>{
+    root: TreeNode<T> | null = null
 
-    insertAtEnd(val: T): string {
-        const node = new ListNode(val)
-        if(!this.head) this.head = node;
+    insert(val: T): string {
+        const node = new TreeNode(val)
+        if(!this.root) this.root = node;
         else{
-            let current = this.head
-            while(current.next) current = current.next;
-            current.next = node
-            node.prev = current
-        }
-        this.size++
-        return `${val} added successfully!`
-    }
-
-    insertAtHead(val: T): string{
-        const node = new ListNode(val)
-        if(!this.head) this.head = node;
-        else{
-            node.next = this.head
-            this.head.prev = node
-            this.head = node
-        }
-        this.size++        
-        return `${val} added successfully!`
-    }
-
-    insertBefore(val: T, reference: T): string {
-        const node = new ListNode(val)
-        if(!this.head) return `${reference} isn't in the list!`;
-        else if(this.head.value === reference) return this.insertAtHead(val);
-        else{
-            let current = this.head
-            while(current.next && current.next.value !== reference) current = current.next;
-            if(!current.next) return `${reference} isn't in the list!`;
-            else{
-                node.next = current.next
-                current.next.prev = node
-                current.next = node
-                node.prev = current
-            }
-        }     
-        this.size++    
-        return `${val} added successfully!`
-    }
-
-    insertAfter(val: T, reference: T): string {
-        const node = new ListNode(val)
-        if(!this.head) return `${reference} isn't in the list!`;
-        else{
-            let current = this.head
-            while(current.value !== reference && current.next) current = current.next;
-            if(current.value !== reference && !current.next) return `${reference} isn't in the list!`;
-            else if(current.value === reference && !current.next){
-                current.next = node
-                node.prev = current
-            }
-            else if(current.value === reference && current.next){
-                node.next = current.next
-                current.next.prev = node
-                current.next = node
-                node.prev = current
-            }
-        }      
-        this.size++   
-        return `${val} added successfully!`
-    }
-
-    searchingNode(val: T): string {
-        if(!this.head) return `${val} isn't in the list!`;
-        else{
-            let current = this.head
-            while(current.value !== val && current.next) current = current.next;
-            if(current.value !== val && !current.next) return `${val} isn't in the list!`;
-        }        
-        return `${val} found successfully!`
-    }
-
-    deleteNode(val: T): string {
-        if(!this.head) return `${val} isn't in the list!`;
-        else if(this.head.value === val){
-            if(this.head.next){
-                this.head = this.head.next
-                this.head.prev = null
-            }
-            else this.head = null;
-        }
-        else{
-            let current = this.head
-            while(current.next?.value !== val && current.next?.next) current = current.next;
-            if(current.next?.value !== val && !current.next?.next) return `${val} isn't in the list!`;
-            else if(current.next?.value === val && !current.next?.next) current.next = null;
-            else if(current.next?.value === val && current.next?.next){
-                current.next = current.next.next
-                current.next.prev = current
-            } 
-        }
-        this.size--
-        return `${val} deleted successfully!`
-    }
-
-    traverseList(){
-        if(!this.head) return null;
-        else{
-            let current = this.head
+            let current = this.root
             while(current){
-                process.stdout.write(`${current.value} <-> `)
-                if(current.next) current = current.next;
+                if(current.value < val){
+                    if(current.right) current = current.right;
+                    else{
+                        current.right = node
+                        break
+                    }
+                }
+                else if(current.value > val){
+                    if(current.left) current = current.left;
+                    else{
+                        current.left = node
+                        break
+                    }
+                }
                 else{
-                    process.stdout.write(`null\n`)
+                    current.freq++
                     break
                 }
             }
-        }        
+        }
+        return `${val} added successfully!`
     }
 
-    sizeOfList(){
-        return this.size;
+    search(val: T): string {
+        if(!this.root) return `Empty BST!`;
+        else{
+            let current = this.root
+            while(current){
+                if(current.value < val){
+                    if(current.right) current = current.right;
+                    else return `${val} isn't in BST!`;
+                }
+                else if(current.value > val){
+                    if(current.left) current = current.left;
+                    else return `${val} isn't in BST!`;
+                }
+                else return `${val} found successfully in BST!`;
+            }
+        }
+        return ``
+    }
+
+    predecessor(val: T): TreeNode<T> | null {
+        if(!this.root) return null;
+        else{
+            let current = this.root
+            let tempPre: TreeNode<T> | null = null
+            while(current.value !== val){
+                if(current.value < val && current.right){
+                    tempPre = current
+                    current = current.right
+                }
+                else if(current.value > val && current.left) current = current.left;
+                else return null;
+            } 
+            if(current.left) current = current.left;
+            else return tempPre ? tempPre : null;
+            while(current.right) current = current.right;
+            return current;
+        }
+    }
+
+    successor(val: T): TreeNode<T> | null {
+        if(!this.root) return null;
+        else{
+            let current = this.root
+            let tempSucc: TreeNode<T> | null = null
+            while(current.value !== val){
+                if(current.value < val && current.right) current = current.right;
+                else if(current.value > val && current.left){
+                    tempSucc = current
+                    current = current.left
+                }
+                else return null;
+            }
+            if(current.right) current = current.right;
+            else return tempSucc ? tempSucc : null;
+            while(current.left) current = current.left;
+            return current;
+        }
+    }
+
+    deleteIteration(val: T): string {
+        let current: TreeNode<T> | null = this.root
+        let parent: TreeNode<T> | null = null
+        if(!this.root) return `Empty BST!`;
+        while(current!.value !== val){
+            parent = current
+            if(current!.value > val && current!.left) current = current!.left;
+            else if(current!.value < val && current!.right) current = current!.right;
+            else return `${val} isn't in BST!`;              
+        }   
+        if(current!.freq > 1) current!.freq--;
+        else if(!current!.left && !current!.right){
+            if(current === this.root) this.root = null;
+            else parent!.left === current ? parent!.left = null : parent!.right = null;
+        }     
+        else if(current!.left && !current!.right) current = current!.left;
+        else if(!current!.left && current!.right) current = current!.right;
+        else{
+            let succ: TreeNode<T> | null = null
+            let presucc: TreeNode<T> | null = null
+            presucc = current
+            succ = current!.right
+            while(succ!.left){
+                presucc = succ
+                succ = succ!.left
+            }
+            current!.value = succ!.value
+            current!.freq = succ!.freq
+            if(presucc!.left === succ) presucc!.left = succ!.right;
+            else if(presucc!.right === succ) presucc!.right = succ!.right;
+        }
+        return `${val} deleted successfully!`;
+    }
+
+    deleteRecursion(val: T): string {
+        this.root = this.deleteNodeRecursion(this.root, val)
+        return `${val} deleted successfully!`
+    }
+
+    deleteNodeRecursion(node: TreeNode<T> | null, val: T): TreeNode<T> | null {
+        if(!node) return null;
+        else if(node.value > val) node.left = this.deleteNodeRecursion(node.left, val);
+        else if(node.value < val) node.right = this.deleteNodeRecursion(node.right, val);
+        else{
+            if(node.freq > 1) node!.freq--;
+            else if(!node.left && !node.right) return null;
+            else if(node.left && !node.right) return node.left;
+            else if(!node.left && node.right) return node.right;
+            else{
+                let succ = this.successor(node.value)
+                node.value = succ!.value
+                node.freq = succ!.freq
+                node.right = this.deleteNodeRecursion(node.right, succ!.value)
+            }
+        } 
+        return node
+    }
+
+    bfsTraverse(){
+        if(!this.root) return [];
+        let temp: TreeNode<T>[] = [this.root]
+        let result: { value: T; freq: number }[] = []
+        while(temp.length !== 0){
+            let node = temp.shift()!
+            result.push({ value: node.value, freq: node.freq })
+            if(node?.left) temp.push(node?.left);
+            if(node?.right) temp.push(node?.right);
+        }   
+        return result;
+    }
+
+    preOrderTraverse(node: TreeNode<T> | null = this.root, result: { value: T; freq: number }[] = []): { value: T; freq: number }[] {
+        if(node){
+            result.push({ value: node.value, freq: node.freq })
+            this.preOrderTraverse(node.left, result)
+            this.preOrderTraverse(node.right, result)
+        }
+        return result;
+    }
+
+    inOrderTraverse(node: TreeNode<T> | null = this.root, result: { value: T; freq: number }[] = []): { value: T; freq: number }[] {
+        if(node){
+            this.inOrderTraverse(node.left, result)
+            result.push({ value: node.value, freq: node.freq })
+            this.inOrderTraverse(node.right, result)
+        }
+        return result
+    }
+
+    postOrderTraverse(node: TreeNode<T> | null = this.root, result: { value: T; freq: number }[] = []): { value: T; freq: number }[] {
+        if(node){
+            this.postOrderTraverse(node.left, result)
+            this.postOrderTraverse(node.right, result)
+            result.push({ value: node.value, freq: node.freq })
+        }
+        return result
     }
 }
 
-let list = new DoublyLinkedList<number | string | boolean>()
-console.log(list.traverseList())
-console.log(list.sizeOfList())
-console.log(list.insertAtEnd("niraj"))
-console.log(list.insertAtEnd(true))
-console.log(list.insertAtEnd(123))
-console.log(list.insertAtEnd("samar"))
-list.traverseList()
-console.log(list.insertAtHead(456))
-console.log(list.insertAtHead(false))
-list.traverseList()
-console.log(list.insertAfter("samay", 123))
-console.log(list.insertAfter("harshi", "samay"))
-console.log(list.insertAfter(786, "samar"))
-list.traverseList()
-console.log(list.insertBefore(6789, "harshi"))
-console.log(list.insertBefore(1234, 6789))
-console.log(list.insertBefore("wxyz", false))
-list.traverseList()
-console.log(list.searchingNode("harshi"))
-console.log(list.searchingNode("wxyz"))
-console.log(list.searchingNode(786))
-console.log(list.deleteNode("samay"))
-console.log(list.deleteNode(786))
-console.log(list.deleteNode("wxyz"))
-list.traverseList()
-console.log(list.deleteNode("samar"))
-console.log(list.insertAtEnd("neer"))
-list.traverseList()
-console.log(list.sizeOfList())
+let bst = new BST<number>()
+console.log(bst.insert(15))
+console.log(bst.insert(23))
+console.log(bst.insert(21))
+console.log(bst.insert(27))
+console.log(bst.insert(9))
+console.log(bst.insert(6))
+console.log(bst.insert(12))
+console.log(bst)
+// console.log(bst.inOrderTraverse())
+// console.log(bst.preOrderTraverse())
+// console.log(bst.postOrderTraverse())
 
+console.log(bst.insert(9))
+// console.log(bst.inOrderTraverse())
+
+// console.log(bst.search(9))
+// console.log(bst.search(23))
+// console.log(bst.search(678))
+// console.log(bst.predecessor(15))
+// console.log(bst.predecessor(23))
+// console.log(bst.predecessor(21))
+// console.log(bst.predecessor(6))
+// console.log(bst.successor(15))
+// console.log(bst.successor(23))
+// console.log(bst.successor(12))
+// console.log(bst.successor(27))
+
+// console.log(bst.deleteRecursion(9))
+// console.log(bst.inOrderTraverse())
+// console.log(bst.deleteRecursion(15))
+// console.log(bst.inOrderTraverse())
+
+// console.log(bst.deleteIteration(9))
+// console.log(bst.inOrderTraverse())
+// console.log(bst.deleteIteration(15))
+// console.log(bst.inOrderTraverse())
+
+
+
+
+// tsc Practice/Practice
+// node Practice/Practice
 
 

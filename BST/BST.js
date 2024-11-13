@@ -4,6 +4,7 @@ var TreeNode = /** @class */ (function () {
     function TreeNode(value) {
         this.left = null;
         this.right = null;
+        this.freq = 1;
         this.value = value;
     }
     return TreeNode;
@@ -34,6 +35,10 @@ var BinarySearchTree = /** @class */ (function () {
                         currentNode.left = newTreeNode;
                         break;
                     }
+                }
+                else {
+                    currentNode.freq++;
+                    break;
                 }
             }
         }
@@ -69,9 +74,12 @@ var BinarySearchTree = /** @class */ (function () {
             return null;
         else {
             currentNode = this.root;
+            var tempPre = null;
             while (currentNode.value !== value) {
-                if (currentNode.value < value && currentNode.right)
+                if (currentNode.value < value && currentNode.right) {
+                    tempPre = currentNode;
                     currentNode = currentNode.right;
+                }
                 else if (currentNode.value > value && currentNode.left)
                     currentNode = currentNode.left;
                 else
@@ -80,7 +88,7 @@ var BinarySearchTree = /** @class */ (function () {
             if (currentNode.left)
                 currentNode = currentNode.left;
             else
-                return null;
+                return tempPre ? tempPre : null;
             while (currentNode.right) {
                 currentNode = currentNode.right;
             }
@@ -93,18 +101,21 @@ var BinarySearchTree = /** @class */ (function () {
             return null;
         else {
             currentNode = this.root;
+            var tempSucc = null;
             while (currentNode.value !== value) {
                 if (currentNode.value < value && currentNode.right)
                     currentNode = currentNode.right;
-                else if (currentNode.value > value && currentNode.left)
+                else if (currentNode.value > value && currentNode.left) {
+                    tempSucc = currentNode;
                     currentNode = currentNode.left;
+                }
                 else
                     return null;
             }
             if (currentNode.right)
                 currentNode = currentNode.right;
             else
-                return null;
+                return tempSucc ? tempSucc : null;
             while (currentNode.left) {
                 currentNode = currentNode.left;
             }
@@ -113,57 +124,45 @@ var BinarySearchTree = /** @class */ (function () {
     };
     BinarySearchTree.prototype.deleteIteration = function (value) {
         var currentNode = this.root;
-        var preCurrentNode = null;
+        var parentNode = null;
         var successorNode = null;
         var preSuccessorNode = null;
         if (!this.root)
             return "Empty BST!";
         else {
-            while (currentNode) {
-                if (currentNode.value < value) {
-                    if (currentNode.right) {
-                        preCurrentNode = currentNode;
-                        currentNode = currentNode.right;
-                    }
-                    else
-                        return "".concat(value, " isn't in BST!");
-                }
-                else if (currentNode.value > value) {
-                    if (currentNode.left) {
-                        preCurrentNode = currentNode;
-                        currentNode = currentNode.left;
-                    }
-                    else
-                        return "".concat(value, " isn't in BST!");
-                }
+            while (currentNode.value !== value) {
+                parentNode = currentNode;
+                if (currentNode.value > value && currentNode.left)
+                    currentNode = currentNode.left;
+                else if (currentNode.value < value && currentNode.right)
+                    currentNode = currentNode.right;
                 else
-                    break;
+                    return "".concat(value, " isn't in BST!");
             }
-            if (!(currentNode === null || currentNode === void 0 ? void 0 : currentNode.left) && !(currentNode === null || currentNode === void 0 ? void 0 : currentNode.right)) {
+            if (currentNode.freq > 1)
+                currentNode.freq--;
+            else if (!(currentNode === null || currentNode === void 0 ? void 0 : currentNode.left) && !(currentNode === null || currentNode === void 0 ? void 0 : currentNode.right)) {
                 if (currentNode === this.root)
                     this.root = null;
-                else {
-                    if (preCurrentNode.left === currentNode)
-                        preCurrentNode.left = null;
-                    else
-                        preCurrentNode.right === null;
-                }
+                else
+                    parentNode.left === currentNode ? parentNode.left = null : parentNode.right = null;
             }
             else if (currentNode.left && !currentNode.right)
                 currentNode = currentNode.left;
             else if (!currentNode.left && currentNode.right)
                 currentNode = currentNode.right;
             else {
+                preSuccessorNode = currentNode;
                 successorNode = currentNode.right;
                 while (successorNode.left) {
                     preSuccessorNode = successorNode;
                     successorNode = successorNode.left;
                 }
-                if (currentNode && successorNode)
-                    currentNode.value = successorNode.value;
+                currentNode.value = successorNode.value;
+                currentNode.freq = successorNode.freq;
                 if (preSuccessorNode.left === successorNode)
                     preSuccessorNode.left = successorNode.right;
-                else
+                else if (preSuccessorNode.right === successorNode)
                     preSuccessorNode.right = successorNode.right;
             }
         }
@@ -171,18 +170,21 @@ var BinarySearchTree = /** @class */ (function () {
     };
     BinarySearchTree.prototype.deleteRecursion = function (value) {
         this.root = this.deleteNode(this.root, value);
+        // This line ensures that any changes to the root (or any other part of the tree) are reflected back in the 
+        // main tree structure.
+        return "".concat(value, " deleted successfully!");
     };
     BinarySearchTree.prototype.deleteNode = function (node, value) {
         if (!node)
             return null;
-        else if (node.value < value) {
-            node.right = this.deleteNode(node.right, value);
-        }
-        else if (node.value > value) {
+        else if (node.value > value)
             node.left = this.deleteNode(node.left, value);
-        }
+        else if (node.value < value)
+            node.right = this.deleteNode(node.right, value);
         else {
-            if (!node.left && !node.right)
+            if (node.freq > 1)
+                node.freq--;
+            else if (!node.left && !node.right)
                 return null;
             else if (node.left && !node.right)
                 return node.left;
@@ -191,18 +193,24 @@ var BinarySearchTree = /** @class */ (function () {
             else {
                 var succ = this.successor(node.value);
                 node.value = succ.value;
-                succ = this.deleteNode(this.root, succ.value);
+                node.freq = succ.freq;
+                node.right = this.deleteNode(node.right, succ.value);
             }
         }
         return node;
     };
-    BinarySearchTree.prototype.inOrderTraverse = function (node, result) {
-        if (node === void 0) { node = this.root; }
-        if (result === void 0) { result = []; }
-        if (node) {
-            this.inOrderTraverse(node.left, result);
-            result.push(node.value);
-            this.inOrderTraverse(node.right, result);
+    BinarySearchTree.prototype.bfsTraverse = function () {
+        if (!this.root)
+            return [];
+        var temp = [this.root];
+        var result = [];
+        while (temp.length !== 0) {
+            var node = temp.shift();
+            result.push({ value: node.value, freq: node.freq });
+            if (node === null || node === void 0 ? void 0 : node.left)
+                temp.push(node === null || node === void 0 ? void 0 : node.left);
+            if (node === null || node === void 0 ? void 0 : node.right)
+                temp.push(node === null || node === void 0 ? void 0 : node.right);
         }
         return result;
     };
@@ -210,8 +218,18 @@ var BinarySearchTree = /** @class */ (function () {
         if (node === void 0) { node = this.root; }
         if (result === void 0) { result = []; }
         if (node) {
-            result.push(node.value);
+            result.push({ value: node.value, freq: node.freq });
+            this.preOrderTraverse(node.left, result);
+            this.preOrderTraverse(node.right, result);
+        }
+        return result;
+    };
+    BinarySearchTree.prototype.inOrderTraverse = function (node, result) {
+        if (node === void 0) { node = this.root; }
+        if (result === void 0) { result = []; }
+        if (node) {
             this.inOrderTraverse(node.left, result);
+            result.push({ value: node.value, freq: node.freq });
             this.inOrderTraverse(node.right, result);
         }
         return result;
@@ -220,9 +238,9 @@ var BinarySearchTree = /** @class */ (function () {
         if (node === void 0) { node = this.root; }
         if (result === void 0) { result = []; }
         if (node) {
-            this.inOrderTraverse(node.left, result);
-            this.inOrderTraverse(node.right, result);
-            result.push(node.value);
+            this.postOrderTraverse(node.left, result);
+            this.postOrderTraverse(node.right, result);
+            result.push({ value: node.value, freq: node.freq });
         }
         return result;
     };
@@ -237,17 +255,27 @@ console.log(bst.insert(9));
 console.log(bst.insert(6));
 console.log(bst.insert(12));
 console.log(bst);
-console.log(bst.search(9));
-console.log(bst.search(23));
-console.log(bst.search(678));
-console.log(bst.predecessor(15));
-console.log(bst.predecessor(23));
-console.log(bst.predecessor(9));
-console.log(bst.predecessor(6));
-console.log(bst.successor(15));
-console.log(bst.successor(23));
-console.log(bst.successor(9));
-console.log(bst.successor(6));
 console.log(bst.inOrderTraverse());
 console.log(bst.preOrderTraverse());
 console.log(bst.postOrderTraverse());
+console.log(bst.insert(9));
+console.log(bst.inOrderTraverse());
+// console.log(bst.search(9))
+// console.log(bst.search(23))
+// console.log(bst.search(678))
+// console.log(bst.predecessor(15))
+// console.log(bst.predecessor(23))
+// console.log(bst.predecessor(21))
+// console.log(bst.predecessor(6))
+// console.log(bst.successor(15))
+// console.log(bst.successor(23))
+// console.log(bst.successor(12))
+// console.log(bst.successor(27))
+// console.log(bst.deleteRecursion(9))
+// console.log(bst.inOrderTraverse())
+// console.log(bst.deleteRecursion(15))
+// console.log(bst.inOrderTraverse())
+// console.log(bst.deleteIteration(9))
+// console.log(bst.inOrderTraverse())
+// console.log(bst.deleteIteration(15))
+// console.log(bst.inOrderTraverse())
